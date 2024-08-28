@@ -10,6 +10,7 @@ import {
 } from "@/contracts/constant";
 import FanToken from "../contracts/FanToken.sol/FanToken.json";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface TicketListProps {
   account: string;
@@ -89,13 +90,13 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img
-                src={"/kobe.png"}
-                alt={`VisselKobe`}
+              <Image
+                src="https://lime-giant-dove-621.mypinata.cloud/ipfs/QmTQxbnL6gumkKFUN18Z4SXnpVWuZ32YeEkeZBbiWyiTjp"
+                alt="Vissel Kobe"
                 width={40}
                 height={40}
                 className="rounded-full"
-                style={{ aspectRatio: "40/40", objectFit: "cover" }}
+                style={{ objectFit: "cover" }}
               />
               <div>
                 <h3 className="text-lg font-semibold">
@@ -103,13 +104,13 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
                 </h3>
                 <p className="text-muted-foreground text-sm">{"2025-08-01"}</p>
               </div>
-              <img
-                src={"/spurs.png"}
-                alt={`TOT awayLogo`}
+              <Image
+                src="https://lime-giant-dove-621.mypinata.cloud/ipfs/QmQyw2cykPKZti61URRaUE9m7AUNWSn99yuCvV5qAZLqEs"
+                alt="TOT"
                 width={40}
                 height={40}
                 className="rounded-full"
-                style={{ aspectRatio: "40/40", objectFit: "cover" }}
+                style={{ objectFit: "cover" }}
               />
             </div>
           </div>
