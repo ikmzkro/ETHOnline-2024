@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 interface TicketListProps {
   account: string;
   signer: any;
-  // signer: ethers.Signer | null;
+  // TODO: signer: ethers.Signer | null;
 }
 
 type SeatType = "leader" | "drum" | "flag" | "fan";
