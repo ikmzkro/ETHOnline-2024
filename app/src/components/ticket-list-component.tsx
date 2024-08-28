@@ -3,7 +3,6 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ethers } from "ethers";
-import { matches } from "@/utils/data";
 import TicketNftContract from "../contracts/TicketNft.sol/TicketNft.json";
 import {
   FanTokenAddress,
@@ -86,97 +85,93 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
 
   return (
     <div className="grid grid-cols-1 gap-12 my-8">
-      {matches.map((match) => (
-        <Card key={match.id}>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <img
-                  src={match.homeLogo}
-                  alt={`${match.teams} homeLogo`}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                  style={{ aspectRatio: "40/40", objectFit: "cover" }}
-                />
-                <div>
-                  <h3 className="text-lg font-semibold">{match.teams}</h3>
-                  <p className="text-muted-foreground text-sm">
-                    {match.matchDate}
-                  </p>
-                </div>
-                <img
-                  src={match.awayLogo}
-                  alt={`${match.teams} awayLogo`}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                  style={{ aspectRatio: "40/40", objectFit: "cover" }}
-                />
+      <Card key={"jwc-2025-1"}>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <img
+                src={"/kobe.png"}
+                alt={`VisselKobe`}
+                width={40}
+                height={40}
+                className="rounded-full"
+                style={{ aspectRatio: "40/40", objectFit: "cover" }}
+              />
+              <div>
+                <h3 className="text-lg font-semibold">
+                  {"Vissel Kobe vs Tottenham Hotspur FC"}
+                </h3>
+                <p className="text-muted-foreground text-sm">{"2025-08-01"}</p>
+              </div>
+              <img
+                src={"/spurs.png"}
+                alt={`TOT awayLogo`}
+                width={40}
+                height={40}
+                className="rounded-full"
+                style={{ aspectRatio: "40/40", objectFit: "cover" }}
+              />
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col items-start gap-4">
+            <div className="flex items-center gap-4">
+              <div className="bg-muted rounded-full w-8 h-8 flex items-center justify-center">
+                <TrophyIcon className="w-5 h-5 text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-sm font-medium">Total ContributionPool</p>
+                <p className="text-2xl font-bold">
+                  {poolBalance !== null ? poolBalance : "0"}{" "}
+                  <span className="text-sm">FanToken</span>
+                </p>
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-start gap-4">
-              <div className="flex items-center gap-4">
-                <div className="bg-muted rounded-full w-8 h-8 flex items-center justify-center">
-                  <TrophyIcon className="w-5 h-5 text-muted-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Total ContributionPool</p>
-                  <p className="text-2xl font-bold">
-                    {poolBalance !== null ? poolBalance : "0"}{" "}
-                    <span className="text-sm">FanToken</span>
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Link
-                  key={match.id}
-                  href={{
-                    pathname: hasPurchasedTicket
-                      ? "/my-ticket"
-                      : "/seating-map",
-                    query: {
-                      id: match.id,
-                      teams: match.teams,
-                      matchDate: match.matchDate,
-                      homeLogo: match.homeLogo,
-                      awayLogo: match.awayLogo,
-                      contributionPool: poolBalance,
-                    },
-                  }}
-                  passHref
-                >
-                  <Button size="sm">
-                    {hasPurchasedTicket ? "My Tickets" : "Buy Tickets"}
-                  </Button>
-                </Link>
-              </div>
+            <div className="flex items-center gap-4">
+              <Link
+                key={"jwc-2025-1"}
+                href={{
+                  pathname: hasPurchasedTicket ? "/my-ticket" : "/seating-map",
+                  query: {
+                    id: "jwc-2025-1",
+                    teams: "Vissel Kobe vs Tottenham Hotspur FC",
+                    matchDate: "2025-08-01",
+                    homeLogo: "/kobe.png",
+                    awayLogo: "/spurs.png",
+                    contributionPool: poolBalance,
+                  },
+                }}
+                passHref
+              >
+                <Button size="sm">
+                  {hasPurchasedTicket ? "My Tickets" : "Buy Tickets"}
+                </Button>
+              </Link>
+            </div>
 
-              <div className="flex items-center gap-4">
-                <Link
-                  key={match.id}
-                  href={{
-                    pathname: "/self-claim",
-                    query: {
-                      id: match.id,
-                      teams: match.teams,
-                      matchDate: match.matchDate,
-                      homeLogo: match.homeLogo,
-                      awayLogo: match.awayLogo,
-                      contributionPool: poolBalance,
-                    },
-                  }}
-                  passHref
-                >
-                  <Button size="sm">{"Self Claim"}</Button>
-                </Link>
-              </div>
+            <div className="flex items-center gap-4">
+              <Link
+                key={"jwc-2025-1"}
+                href={{
+                  pathname: "/self-claim",
+                  query: {
+                    id: "jwc-2025-1",
+                    teams: "Vissel Kobe vs Tottenham Hotspur FC",
+                    matchDate: "2025-08-01",
+                    homeLogo: "/kobe.png",
+                    awayLogo: "/spurs.png",
+                    contributionPool: poolBalance,
+                  },
+                }}
+                passHref
+              >
+                <Button size="sm">{"Self Claim"}</Button>
+              </Link>
             </div>
-          </CardContent>
-        </Card>
-      ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
