@@ -1,26 +1,21 @@
-init Next.js
+# EthDrive
 
-https://nextjs.org/docs/getting-started/installation#automatic-installation
+![top](./docs/top.png)
+
+## Demo App
 
 
-v0
+## Description
 
-https://zenn.dev/nenenemo/articles/e297947f669ec7#v0%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%A8%E5%88%9D%E6%9C%9F%E5%8C%96
+## How it's made
 
-npx v0 add AW6R3VpfOA8
+![architecture](./docs/architecture.png)
 
-Component名は先頭大文字にしてimportすればなんとかなる
+## Deployed Contracts for ChilizProof Application
 
-v0vercelの型なしに対してanyをつければbuildは通る
+```
+```
 
-Netify
-- https://app.netlify.com/sites/ornate-hummingbird-d34db2/overview
-- https://ornate-hummingbird-d34db2.netlify.app/
 
-Vercel
-- https://vercel.com/ikmz0104s-projects/v0vercel
-- https://v0vercel-ikmz0104s-projects.vercel.app/
-
-以上でフロントエンド基盤とインフラ基盤の最小化が完成する
-
-これでコントラクト開発に時間をさくことができる
+書き方参考：
+https://github.com/ikmzkro/EthDrive/edit/main/README.md
