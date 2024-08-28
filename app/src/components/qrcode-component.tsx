@@ -3,17 +3,31 @@
  * @see https://v0.dev/t/hOZqFTzgJ6S
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
+import useTicketMetadata from "@/hooks/useTicketMetadata";
+import { useRouter } from "next/router";
 import QRCode from "qrcode.react";
 
-interface QRCodeComponentProps {
-  nftData: any;
-  metaData: any;
-}
+interface QRCodeComponentProps {}
 
-export function QRCodeComponent({ nftData, metaData }: QRCodeComponentProps) {
-  console.log("nftData, metaData", nftData, metaData);
-  // Generate QR code value (you can customize what data you want to encode)
-  const qrValue = JSON.stringify({ nftData, metaData });
+export function QRCodeComponent({}: QRCodeComponentProps) {
+  // Error: NextRouter was not mounted. https://nextjs.org/docs/messages/next-router-not-mounted
+  // const router = useRouter();
+  // const { nftData, metaData } = router.query;
+
+  const chainId = 88882;
+  const account = "0xa2fb2553e57436b455F57270Cc6f56f6dacDA1a5";
+  const res = useTicketMetadata({ chainId, account });
+  console.log("res", res);
+
+  if (!res.metadata) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-xl font-semibold">Loading...</div>
+      </div>
+    );
+  }
+
+  const qrValue = JSON.stringify(res.metadata);
 
   return (
     <>
@@ -23,21 +37,21 @@ export function QRCodeComponent({ nftData, metaData }: QRCodeComponentProps) {
             <h2 className="text-lg font-bold">MATCH INFO</h2>
           </div>
           <div className="w-full p-4">
-            <p className="text-lg font-bold">{metaData.matchDate}</p>
-            <p className="text-sm text-gray-500">{metaData.description}</p>
-            <p className="text-lg font-semibold mt-2">{metaData.name}</p>
+            <p className="text-lg font-bold">{res.metaData?.matchDate}</p>
+            <p className="text-sm text-gray-500">{res.metaData?.description}</p>
+            <p className="text-lg font-semibold mt-2">{res.metaData?.name}</p>
             <div className="flex items-center justify-between w-full p-4 mt-4 bg-gray-100 rounded-lg">
               <div>
                 <p className="text-sm text-gray-500">Role</p>
-                <p className="text-lg font-bold">{nftData[3]}</p>
+                <p className="text-lg font-bold">{res.nftData[3]}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">Entry Gate</p>
-                <p className="text-lg font-bold">{metaData?.entryGate}</p>
+                <p className="text-lg font-bold">{res.metaData?.entryGate}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">Seat</p>
-                <p className="text-lg font-bold">{nftData[2]}</p>
+                <p className="text-lg font-bold">{res.nftData[2]}</p>
               </div>
             </div>
             <div className="flex flex-col items-center w-full mt-4">
@@ -50,19 +64,19 @@ export function QRCodeComponent({ nftData, metaData }: QRCodeComponentProps) {
               <div className="flex justify-between">
                 <span>Venue</span>
                 <span className="font-bold text-right">
-                  {metaData.stadiumName}
+                  {res.metaData?.stadiumName}
                 </span>
               </div>
               <div className="flex justify-between mt-2">
                 <span>Opening Time</span>
                 <span className="font-bold text-right">
-                  {metaData.openingTime}
+                  {res.metaData?.openingTime}
                 </span>
               </div>
               <div className="flex justify-between mt-2">
                 <span>Kickoff Time</span>
                 <span className="font-bold text-right">
-                  {metaData.kickoffTime}
+                  {res.metaData?.kickoffTime}
                 </span>
               </div>
             </div>

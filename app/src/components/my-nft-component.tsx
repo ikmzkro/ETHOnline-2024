@@ -10,7 +10,7 @@ interface MyNftProps {
 }
 
 export function MyNftComponent({ chainId, account }: MyNftProps) {
-  const res = useTicketMetadata({ chainId, account });
+  const res: any = useTicketMetadata({ chainId, account });
 
   if (!res.metadata) {
     return (
@@ -20,9 +20,9 @@ export function MyNftComponent({ chainId, account }: MyNftProps) {
     );
   }
 
-  const tokenId = res.nftData[0]?.toString();
-  const seatNumber = res.nftData[2];
-  const role = res.nftData[3];
+  const tokenId = res?.nftData[0].toString();
+  const seatNumber = res?.nftData[2];
+  const role = res?.nftData[3];
 
   return (
     <Card
@@ -64,10 +64,6 @@ export function MyNftComponent({ chainId, account }: MyNftProps) {
             <Link
               href={{
                 pathname: "/qr-code",
-                query: {
-                  nftData: encodeURIComponent(res.nftData as any),
-                  metaData: encodeURIComponent(res.metadata),
-                },
               }}
               passHref
             >
