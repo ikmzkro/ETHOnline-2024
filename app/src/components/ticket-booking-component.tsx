@@ -192,7 +192,7 @@ export function TicketBookingComponent({}: TicketBookingComponentProps) {
                     }}
                     disabled={isProcessing}
                   >
-                    {isProcessing ? "Processing..." : "Mint Ticket"}
+                    {isProcessing ? "Processing..." : "Mint Nft"}
                   </Button>
                 </div>
               </CardContent>
