@@ -7,11 +7,11 @@ export function FooterComponent() {
         <div className="flex items-center justify-between max-w-screen-xl mx-auto">
           <p>&copy; 2024 ChilizProof. All rights reserved.</p>
           <div className="flex items-center space-x-4">
-            <Link href="#" className="hover:text-accent" prefetch={false}>
-              Privacy Policy
+            <Link href="https://github.com/ikmzkro/ETHOnline-2024" className="hover:text-accent" prefetch={false}>
+              GitHub Link
             </Link>
-            <Link href="#" className="hover:text-accent" prefetch={false}>
-              Terms of Service
+            <Link href="https://x.com/ikmzkro" className="hover:text-accent" prefetch={false}>
+              X Account
             </Link>
           </div>
         </div>
