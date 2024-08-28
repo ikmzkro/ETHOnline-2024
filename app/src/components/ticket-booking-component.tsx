@@ -99,8 +99,8 @@ export function TicketBookingComponent({}: TicketBookingComponentProps) {
   //         console.log("Transaction successful:", res.transactionHash);
   //         alert("Transaction successful!");
   //         // Navigate to the TOP page after success
-  //         // TODO: router.push("/my-ticket");
-  //         // () => navigateTo("/my-ticket");
+  //         // TODO: router.push("/my-nft");
+  //         // () => navigateTo("/my-nft");
   //       }
   //     } catch (error) {
   //       console.error("Error while waiting for the transaction:", error);
