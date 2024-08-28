@@ -2,86 +2,69 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ethers } from "ethers";
-import TicketNftContract from "../contracts/TicketNft.sol/TicketNft.json";
-import {
-  FanTokenContractAddress,
-  TicketNftContractAddress,
-} from "@/contracts/constant";
-import FanToken from "../contracts/FanToken.sol/FanToken.json";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { useReadContract } from "wagmi";
+import usePoolBalance from "@/hooks/usePoolBalance";
+import { formatCurrency } from "@/lib/utils";
 
 interface TicketListProps {
-  account: string;
-  signer: any;
-  // TODO: signer: ethers.Signer | null;
+  chainId: number;
 }
 
-type SeatType = "leader" | "drum" | "flag" | "fan";
+export function TicketListComponent({ chainId }: TicketListProps) {
+  const poolBalance = usePoolBalance(chainId as any);
+  console.log("poolBalance", poolBalance);
 
-interface Seat {
-  seatNumber: number;
-  type: SeatType;
-  reward: number;
-}
-
-export function TicketListComponent({ account, signer }: TicketListProps) {
-  const [poolBalance, setPoolBalance] = useState<string | null>(null);
   const [hasPurchasedTicket, setHasPurchasedTicket] = useState<boolean>(false);
-  const getContributionPool = async () => {
-    try {
-      const contract = new ethers.Contract(
-        FanTokenContractAddress as string,
-        FanToken.abi,
-        signer
-      );
+  // const getContributionPool = async () => {
+  //   try {
+  //     // const contract = new ethers.Contract(
+  //     //   FanTokenContractAddress as string,
+  //     //   FanToken.abi,
+  //     //   signer
+  //     // );
+  //     // const result = useReadContract({
+  //     //   abi: FanToken.abi,
+  //     //   address: FanTokenContractAddress,
+  //     //   functionName: "",
+  //     //   args: [FanTokenContractAddress],
+  //     // });
+  //     // console.log("result", result);
+  //     // setPoolBalance(ethers.utils.formatEther(pool));
+  //   } catch (err) {
+  //     console.log("Error fetching pool balance:", err);
+  //     setPoolBalance(null);
+  //   }
+  // };
 
-      // const result = useReadContract({
-      //   abi: FanToken.abi,
-      //   address: FanTokenContractAddress,
-      //   functionName: "",
-      //   args: [FanTokenContractAddress],
-      // });
+  // const fetchPurchasedSeats = async () => {
+  //   if (!signer) return;
 
-      // console.log("result", result);
+  //   const contract = new ethers.Contract(
+  //     TicketNftContractAddress as string,
+  //     TicketNftContract.abi,
+  //     signer
+  //   );
 
-      // setPoolBalance(ethers.utils.formatEther(pool));
-    } catch (err) {
-      console.log("Error fetching pool balance:", err);
-      setPoolBalance(null);
-    }
-  };
+  //   try {
+  //     const nft = await contract.getTicketMetadata(account);
 
-  const fetchPurchasedSeats = async () => {
-    if (!signer) return;
+  //     // Before issuance, the NFT array has the following values: nft[0] is tokenId = 0, and nft[1~3] are empty strings ("").
+  //     if (nft[1]) {
+  //       setHasPurchasedTicket(true);
+  //     } else {
+  //       setHasPurchasedTicket(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching purchased seats:", error);
+  //     setHasPurchasedTicket(false);
+  //   }
+  // };
 
-    const contract = new ethers.Contract(
-      TicketNftContractAddress as string,
-      TicketNftContract.abi,
-      signer
-    );
-
-    try {
-      const nft = await contract.getTicketMetadata(account);
-
-      // Before issuance, the NFT array has the following values: nft[0] is tokenId = 0, and nft[1~3] are empty strings ("").
-      if (nft[1]) {
-        setHasPurchasedTicket(true);
-      } else {
-        setHasPurchasedTicket(false);
-      }
-    } catch (error) {
-      console.error("Error fetching purchased seats:", error);
-      setHasPurchasedTicket(false);
-    }
-  };
-
-  useEffect(() => {
-    getContributionPool();
-    fetchPurchasedSeats();
-  }, []);
+  // useEffect(() => {
+  //   getContributionPool();
+  //   fetchPurchasedSeats();
+  // }, []);
 
   return (
     <div className="grid grid-cols-1 gap-12 my-8">
@@ -123,7 +106,7 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
               <div>
                 <p className="text-sm font-medium">Total ContributionPool</p>
                 <p className="text-2xl font-bold">
-                  {poolBalance !== null ? poolBalance : "0"}{" "}
+                  {poolBalance !== null ? formatCurrency(poolBalance) : "0"}{" "}
                   <span className="text-sm">FanToken</span>
                 </p>
               </div>
