@@ -15,9 +15,8 @@ interface TicketListProps {
 
 export function TicketListComponent({ chainId, account }: TicketListProps) {
   const poolBalance = usePoolBalance(chainId as any);
-  const nftData = useTicketMetadata({ chainId, account });
-
-  const hasPurchasedTicket = true
+  const res = useTicketMetadata({ chainId, account });
+  const hasPurchased = res?.isPurchased;
 
   return (
     <div className="grid grid-cols-1 gap-12 my-8">
@@ -68,7 +67,7 @@ export function TicketListComponent({ chainId, account }: TicketListProps) {
               <Link
                 key={"jwc-2025-1"}
                 href={{
-                  pathname: hasPurchasedTicket ? "/my-nft" : "/ticket-booking",
+                  pathname: hasPurchased ? "/my-nft" : "/ticket-booking",
                   query: {
                     id: "jwc-2025-1",
                     teams: "Vissel Kobe vs Tottenham Hotspur FC",
@@ -83,7 +82,7 @@ export function TicketListComponent({ chainId, account }: TicketListProps) {
                 passHref
               >
                 <Button size="sm">
-                  {hasPurchasedTicket ? "My Nft" : "Buy Tickets"}
+                  {hasPurchased ? "My Nft" : "Buy Tickets"}
                 </Button>
               </Link>
             </div>
