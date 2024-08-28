@@ -88,25 +88,7 @@ export function TicketListComponent({ chainId, account }: TicketListProps) {
             </div>
 
             <div className="flex items-center gap-4">
-              <Link
-                key={"jwc-2025-1"}
-                href={{
-                  pathname: "/self-claim",
-                  query: {
-                    id: "jwc-2025-1",
-                    teams: "Vissel Kobe vs Tottenham Hotspur FC",
-                    matchDate: "2025-08-01",
-                    homeLogo:
-                      "https://lime-giant-dove-621.mypinata.cloud/ipfs/QmTQxbnL6gumkKFUN18Z4SXnpVWuZ32YeEkeZBbiWyiTjp",
-                    awayLogo:
-                      "https://lime-giant-dove-621.mypinata.cloud/ipfs/QmQyw2cykPKZti61URRaUE9m7AUNWSn99yuCvV5qAZLqEs",
-                    contributionPool: poolBalance,
-                  },
-                }}
-                passHref
-              >
-                <Button size="sm">{"Self Claim"}</Button>
-              </Link>
+              <Button size="sm">{"Self Claim"}</Button>
             </div>
           </div>
         </CardContent>
