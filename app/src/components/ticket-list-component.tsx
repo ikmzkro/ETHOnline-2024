@@ -133,7 +133,7 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
               <Link
                 key={"jwc-2025-1"}
                 href={{
-                  pathname: hasPurchasedTicket ? "/my-ticket" : "/seating-map",
+                  pathname: hasPurchasedTicket ? "/my-ticket" : "/ticket-booking",
                   query: {
                     id: "jwc-2025-1",
                     teams: "Vissel Kobe vs Tottenham Hotspur FC",
