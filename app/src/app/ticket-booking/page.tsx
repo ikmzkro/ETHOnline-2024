@@ -2,7 +2,7 @@
 
 import { FooterComponent } from "@/components/footer-component";
 import { HeaderComponent } from "@/components/header-component";
-import { TicketBookingComponent } from "@/components/ticket-booking-component-v2";
+import { TicketBookingComponent } from "@/components/ticket-booking-component";
 
 export default function TicketBooking() {
   return (

@@ -8,9 +8,7 @@ import {
   VisselKobeVSTottenhamHotspurFCTokenURI,
 } from "@/contracts/constant";
 import TicketNftContract from "../contracts/TicketNft.sol/TicketNft.json";
-import { useRouter } from "next/router";
 import axios from "axios";
-
 interface TicketBookingComponentProps {
   contributionPool: string;
   account: string;
@@ -115,7 +113,8 @@ export function TicketBookingComponent({
           console.log("Transaction successful:", res.transactionHash);
           alert("Transaction successful!");
           // Navigate to the TOP page after success
-          router.push("/my-ticket");
+          // TODO: router.push("/my-ticket");
+          // () => navigateTo("/my-ticket");
         }
       } catch (error) {
         console.error("Error while waiting for the transaction:", error);
