@@ -25,7 +25,8 @@
     "v0": "^2.2.5",
     "viem": "^2.20.0",
     "wagmi": "^2.12.1",
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "qrcode.react": "^3.1.0"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.28.4",
