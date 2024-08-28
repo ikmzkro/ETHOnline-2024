@@ -2,56 +2,42 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { ethers } from "ethers";
-import {
-  TicketNftContractAddress,
-  VisselKobeVSTottenhamHotspurFCTokenURI,
-} from "@/contracts/constant";
-import TicketNftContract from "../contracts/TicketNft.sol/TicketNft.json";
-import axios from "axios";
-interface TicketBookingComponentProps {
-  contributionPool: string;
-  account: string;
-  signer: ethers.Signer | null;
-}
 
-export function TicketBookingComponent({
-  contributionPool,
-  account,
-  signer,
-}: TicketBookingComponentProps) {
+interface TicketBookingComponentProps {}
+
+export function TicketBookingComponent({}: TicketBookingComponentProps) {
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [purchasedSeats, setPurchasedSeats] = useState<number[]>([]);
   const [metaData, setMetaData] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchPurchasedSeats = async () => {
-      if (!signer) return;
+  // useEffect(() => {
+  //   const fetchPurchasedSeats = async () => {
+  //     if (!signer) return;
 
-      const contract = new ethers.Contract(
-        TicketNftContractAddress as string,
-        TicketNftContract.abi,
-        signer
-      );
+  //     const contract = new ethers.Contract(
+  //       TicketNftContractAddress as string,
+  //       TicketNftContract.abi,
+  //       signer
+  //     );
 
-      try {
-        const purchasedSeats = await contract.getUsedSeatNumbers();
-        setPurchasedSeats(purchasedSeats);
+  //     try {
+  //       const purchasedSeats = await contract.getUsedSeatNumbers();
+  //       setPurchasedSeats(purchasedSeats);
 
-        const metaData = await axios.get(
-          VisselKobeVSTottenhamHotspurFCTokenURI as any
-        );
+  //       const metaData = await axios.get(
+  //         VisselKobeVSTottenhamHotspurFCTokenURI as any
+  //       );
 
-        setMetaData(metaData.data);
-      } catch (error) {
-        console.error("Error fetching purchased seats:", error);
-      }
-    };
+  //       setMetaData(metaData.data);
+  //     } catch (error) {
+  //       console.error("Error fetching purchased seats:", error);
+  //     }
+  //   };
 
-    fetchPurchasedSeats();
-  }, [signer]);
+  //   fetchPurchasedSeats();
+  // }, [signer]);
 
   const handleSeatClick = (seatNumber: number) => {
     const seatNum = Number(seatNumber);
@@ -68,65 +54,65 @@ export function TicketBookingComponent({
     }
   };
 
-  const mint = async () => {
-    try {
-      if (!signer) {
-        console.error("Signer is not available");
-        alert("Signer is not available");
-        return;
-      }
+  // const mint = async () => {
+  //   try {
+  //     // if (!signer) {
+  //     //   console.error("Signer is not available");
+  //     //   alert("Signer is not available");
+  //     //   return;
+  //     // }
 
-      if (!selectedSeat) {
-        alert("Please select a seat number");
-        return;
-      }
+  //     if (!selectedSeat) {
+  //       alert("Please select a seat number");
+  //       return;
+  //     }
 
-      const seatNumber = parseInt(selectedSeat.replace("Seat ", ""), 10);
+  //     const seatNumber = parseInt(selectedSeat.replace("Seat ", ""), 10);
 
-      const contract = new ethers.Contract(
-        TicketNftContractAddress as string,
-        TicketNftContract.abi,
-        signer
-      );
+  //     const contract = new ethers.Contract(
+  //       TicketNftContractAddress as string,
+  //       TicketNftContract.abi,
+  //       signer
+  //     );
 
-      if (!contract) {
-        console.error("Contract with MetaMask is not initialized");
-        alert("Contract with MetaMask is not initialized");
-        return;
-      }
+  //     if (!contract) {
+  //       console.error("Contract with MetaMask is not initialized");
+  //       alert("Contract with MetaMask is not initialized");
+  //       return;
+  //     }
 
-      const contractTx = await contract.safeMint(
-        account,
-        VisselKobeVSTottenhamHotspurFCTokenURI,
-        String(seatNumber),
-        selectedRole,
-        {
-          gasLimit: 1000000,
-        }
-      );
+  //     const contractTx = await contract.safeMint(
+  //       account,
+  //       VisselKobeVSTottenhamHotspurFCTokenURI,
+  //       String(seatNumber),
+  //       selectedRole,
+  //       {
+  //         gasLimit: 1000000,
+  //       }
+  //     );
 
-      try {
-        setIsProcessing(true);
-        alert("Transaction is processing...");
-        const res = await contractTx.wait();
-        if (res.transactionHash) {
-          console.log("Transaction successful:", res.transactionHash);
-          alert("Transaction successful!");
-          // Navigate to the TOP page after success
-          // TODO: router.push("/my-ticket");
-          // () => navigateTo("/my-ticket");
-        }
-      } catch (error) {
-        console.error("Error while waiting for the transaction:", error);
-        alert("Error while waiting for the transaction: " + error);
-      }
-    } catch (error) {
-      console.error("Error during mint transaction:", error);
-      alert("Error during mint: " + error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+  //     try {
+  //       setIsProcessing(true);
+  //       alert("Transaction is processing...");
+  //       const res = await contractTx.wait();
+  //       if (res.transactionHash) {
+  //         console.log("Transaction successful:", res.transactionHash);
+  //         alert("Transaction successful!");
+  //         // Navigate to the TOP page after success
+  //         // TODO: router.push("/my-ticket");
+  //         // () => navigateTo("/my-ticket");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error while waiting for the transaction:", error);
+  //       alert("Error while waiting for the transaction: " + error);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during mint transaction:", error);
+  //     alert("Error during mint: " + error);
+  //   } finally {
+  //     setIsProcessing(false);
+  //   }
+  // };
 
   return (
     <>
@@ -198,21 +184,14 @@ export function TicketBookingComponent({
                     <Label htmlFor="role">Role</Label>
                     <div>{selectedRole || "No seat selected"}</div>
                   </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="pool">Contribution Pool</Label>
-                    <div>{contributionPool} CHZ</div>
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="ticket-price">Contribution Rewards</Label>
-                    <div>
-                      Calculated based on the role coefficients and distributed
-                      accordingly. It will be sent to the NFT-holding addresses
-                      after the match results.
-                    </div>
-                  </div>
                 </div>
                 <div className="mt-4">
-                  <Button onClick={mint} disabled={isProcessing}>
+                  <Button
+                    onClick={() => {
+                      console.log("sa");
+                    }}
+                    disabled={isProcessing}
+                  >
                     {isProcessing ? "Processing..." : "Mint Ticket"}
                   </Button>
                 </div>
