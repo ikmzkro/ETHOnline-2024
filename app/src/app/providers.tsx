@@ -6,7 +6,7 @@ import * as React from "react";
 import { WagmiProvider } from "wagmi";
 
 import { wagmiConfig } from "@/lib/web3";
-import { sepolia } from "viem/chains";
+import { spicy } from "viem/chains";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -47,7 +47,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider modalSize="compact" initialChain={sepolia}>
+        <RainbowKitProvider modalSize="compact" initialChain={spicy}>
           {children}
         </RainbowKitProvider>
       </QueryClientProvider>
