@@ -20,9 +20,9 @@ export function MyNftComponent({ chainId, account }: MyNftProps) {
     );
   }
 
-  const tokenId = res?.nftData[0].toString();
-  const seatNumber = res?.nftData[2];
-  const role = res?.nftData[3];
+  const tokenId = res?.nftdata[0].toString();
+  const seatNumber = res?.nftdata[2];
+  const role = res?.nftdata[3];
 
   return (
     <Card

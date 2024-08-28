@@ -16,8 +16,7 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
 
   const chainId = 88882;
   const account = "0xa2fb2553e57436b455F57270Cc6f56f6dacDA1a5";
-  const res = useTicketMetadata({ chainId, account });
-  console.log("res", res);
+  const res: any = useTicketMetadata({ chainId, account });
 
   if (!res.metadata) {
     return (
@@ -43,7 +42,7 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
             <div className="flex items-center justify-between w-full p-4 mt-4 bg-gray-100 rounded-lg">
               <div>
                 <p className="text-sm text-gray-500">Role</p>
-                <p className="text-lg font-bold">{res.nftData[3]}</p>
+                <p className="text-lg font-bold">{res.nftdata[3]}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">Entry Gate</p>
@@ -51,7 +50,7 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
               </div>
               <div>
                 <p className="text-sm text-gray-500">Seat</p>
-                <p className="text-lg font-bold">{res.nftData[2]}</p>
+                <p className="text-lg font-bold">{res.nftdata[2]}</p>
               </div>
             </div>
             <div className="flex flex-col items-center w-full mt-4">

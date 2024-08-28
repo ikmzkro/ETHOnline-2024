@@ -24,16 +24,17 @@ const useTicketMetadata = ({
     functionName: "getTicketMetadata",
     args: ['0xa2fb2553e57436b455F57270Cc6f56f6dacDA1a5'],
   });
+  const nftdata: any = nftData;
 
   useEffect(() => {
     const fetchMetadata = async () => {
-      if (!nftData || !nftData[1]) return; // Handle case where nftData or URL is not present
-      const isPurchased = nftData[0]?.toString() !== '0'; // Check if purchased
+      if (!nftdata || !nftdata[1]) return; // Handle case where nftdata or URL is not present
+      const isPurchased = nftdata[0]?.toString() !== '0'; // Check if purchased
       setIsPurchased(isPurchased);
 
       try {
         setLoading(true);
-        const response = await axios.get(nftData[1]); // Fetch the metadata from the URL
+        const response = await axios.get(nftdata[1]); // Fetch the metadata from the URL
         setMetadata(response.data);
       } catch (err) {
         setError("Failed to fetch metadata");
@@ -44,9 +45,9 @@ const useTicketMetadata = ({
     };
 
     fetchMetadata();
-  }, [nftData]);
+  }, [nftdata]);
 
-  return { isPurchased, metadata, nftData, loading: isLoading || loading, error: isError || error };
+  return { isPurchased, metadata, nftdata, loading: isLoading || loading, error: isError || error };
 };
 
 export default useTicketMetadata;
