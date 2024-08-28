@@ -1,17 +1,9 @@
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-interface HeaderProps {
-  account: string;
-  connectWallet: () => void;
-  disConnectWallet: () => void;
-}
+interface HeaderProps {}
 
-export function HeaderComponent({
-  account,
-  connectWallet,
-  disConnectWallet,
-}: HeaderProps) {
+export function HeaderComponent({}: HeaderProps) {
   return (
     <>
       <header className="bg-primary text-primary-foreground py-4 px-6 w-full">
@@ -19,24 +11,7 @@ export function HeaderComponent({
           <Link href="/" className="text-xl font-bold" prefetch={false}>
             ChilizProof
           </Link>
-          <nav className="hidden md:flex items-center space-x-4">
-            <Link
-              href="my-ticket"
-              className="hover:text-accent"
-              prefetch={false}
-            >
-              My Ticket
-            </Link>
-            {account ? (
-              <Button onClick={disConnectWallet} className="hover:text-accent">
-                Disconnect ({account.substring(0, 6)}...{account.slice(-4)})
-              </Button>
-            ) : (
-              <Button onClick={connectWallet} className="hover:text-accent">
-                Connect Wallet
-              </Button>
-            )}
-          </nav>
+          <ConnectButton />
         </div>
       </header>
     </>
