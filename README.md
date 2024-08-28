@@ -1,4 +1,4 @@
-# EthDrive
+# ChilizProof
 
 ![top](./docs/top.png)
 
