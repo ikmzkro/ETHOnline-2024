@@ -5,12 +5,13 @@ import Link from "next/link";
 import { ethers } from "ethers";
 import TicketNftContract from "../contracts/TicketNft.sol/TicketNft.json";
 import {
-  FanTokenAddress,
+  FanTokenContractAddress,
   TicketNftContractAddress,
 } from "@/contracts/constant";
 import FanToken from "../contracts/FanToken.sol/FanToken.json";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useReadContract } from "wagmi";
 
 interface TicketListProps {
   account: string;
@@ -31,24 +32,22 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
   const [hasPurchasedTicket, setHasPurchasedTicket] = useState<boolean>(false);
   const getContributionPool = async () => {
     try {
-      if (!signer) {
-        console.error("Signer is not available");
-        return;
-      }
-
       const contract = new ethers.Contract(
-        FanTokenAddress as string,
+        FanTokenContractAddress as string,
         FanToken.abi,
         signer
       );
 
-      if (!contract) {
-        console.error("Contract with MetaMask is not initialized");
-        return;
-      }
+      // const result = useReadContract({
+      //   abi: FanToken.abi,
+      //   address: FanTokenContractAddress,
+      //   functionName: "",
+      //   args: [FanTokenContractAddress],
+      // });
 
-      const pool = await contract?.balanceOf(FanTokenAddress);
-      setPoolBalance(ethers.utils.formatEther(pool));
+      // console.log("result", result);
+
+      // setPoolBalance(ethers.utils.formatEther(pool));
     } catch (err) {
       console.log("Error fetching pool balance:", err);
       setPoolBalance(null);
@@ -82,7 +81,7 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
   useEffect(() => {
     getContributionPool();
     fetchPurchasedSeats();
-  }, [poolBalance, signer]);
+  }, []);
 
   return (
     <div className="grid grid-cols-1 gap-12 my-8">
@@ -133,7 +132,9 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
               <Link
                 key={"jwc-2025-1"}
                 href={{
-                  pathname: hasPurchasedTicket ? "/my-ticket" : "/ticket-booking",
+                  pathname: hasPurchasedTicket
+                    ? "/my-ticket"
+                    : "/ticket-booking",
                   query: {
                     id: "jwc-2025-1",
                     teams: "Vissel Kobe vs Tottenham Hotspur FC",
