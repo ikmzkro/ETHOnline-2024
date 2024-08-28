@@ -17,7 +17,7 @@ export function TicketListComponent({ chainId, account }: TicketListProps) {
   const poolBalance = usePoolBalance(chainId as any);
   // const hasPurchasedTicket = useHasPurchasedTicket({ chainId, account });
 
-  const hasPurchasedTicket = false
+  const hasPurchasedTicket = true
 
   return (
     <div className="grid grid-cols-1 gap-12 my-8">

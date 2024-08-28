@@ -61,10 +61,10 @@ export function MyNftComponent({}: MyNftProps) {
       <Image
         src={metaData?.image || "/placeholder.svg"}
         alt="NFT artwork"
-        width={320} // Set the width of the image
-        height={320} // Set the height of the image
+        width={320} 
+        height={320} 
         className="object-cover w-full"
-        style={{ aspectRatio: "1/1" }} // Maintain aspect ratio
+        style={{ aspectRatio: "1/1" }}
       />
       <CardContent className="p-4">
         <h2 className="text-2xl font-bold hover:text-gray-700 transition-all duration-200">
