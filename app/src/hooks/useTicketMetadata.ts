@@ -20,16 +20,17 @@ const useTicketMetadata = ({
   const { data: nftData, isError, isLoading } = useReadContract({
     address: TicketNftContractAddress,
     abi: TicketNftContract.abi,
-    chainId,
+    chainId: 88882,
     functionName: "getTicketMetadata",
-    args: [account],
+    args: ['0xa2fb2553e57436b455F57270Cc6f56f6dacDA1a5'],
   });
 
   useEffect(() => {
     const fetchMetadata = async () => {
       if (!nftData || !nftData[1]) return; // Handle case where nftData or URL is not present
-      const isPurchased = nftData[0]?.toString() !== '0'
-      setIsPurchased(isPurchased)
+      const isPurchased = nftData[0]?.toString() !== '0'; // Check if purchased
+      setIsPurchased(isPurchased);
+
       try {
         setLoading(true);
         const response = await axios.get(nftData[1]); // Fetch the metadata from the URL
@@ -45,7 +46,7 @@ const useTicketMetadata = ({
     fetchMetadata();
   }, [nftData]);
 
-  return { isPurchased, metadata, loading: isLoading || loading, error: isError || error };
+  return { isPurchased, metadata, nftData, loading: isLoading || loading, error: isError || error };
 };
 
 export default useTicketMetadata;
