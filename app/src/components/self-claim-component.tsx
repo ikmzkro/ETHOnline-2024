@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CardHeader } from "./ui/card";
 import { ethers } from "ethers";
 import {
-  FanTokenAddress,
+  FanTokenContractAddress,
   TicketNftContractAddress,
 } from "@/contracts/constant";
 import TicketNftContract from "../contracts/TicketNft.sol/TicketNft.json";
@@ -118,7 +118,7 @@ export function SelfClaimComponent({
       }
 
       const contract = new ethers.Contract(
-        FanTokenAddress as string,
+        FanTokenContractAddress as string,
         Fantoken.abi,
         signer
       );
