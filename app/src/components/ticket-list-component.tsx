@@ -6,65 +6,16 @@ import { useState } from "react";
 import Image from "next/image";
 import usePoolBalance from "@/hooks/usePoolBalance";
 import { formatCurrency } from "@/lib/utils";
+import useHasPurchasedTicket from "@/hooks/useHasPurchasedTicket";
 
 interface TicketListProps {
   chainId: number;
+  account: string;
 }
 
-export function TicketListComponent({ chainId }: TicketListProps) {
+export function TicketListComponent({ chainId, account }: TicketListProps) {
   const poolBalance = usePoolBalance(chainId as any);
-  console.log("poolBalance", poolBalance);
-
-  const [hasPurchasedTicket, setHasPurchasedTicket] = useState<boolean>(false);
-  // const getContributionPool = async () => {
-  //   try {
-  //     // const contract = new ethers.Contract(
-  //     //   FanTokenContractAddress as string,
-  //     //   FanToken.abi,
-  //     //   signer
-  //     // );
-  //     // const result = useReadContract({
-  //     //   abi: FanToken.abi,
-  //     //   address: FanTokenContractAddress,
-  //     //   functionName: "",
-  //     //   args: [FanTokenContractAddress],
-  //     // });
-  //     // console.log("result", result);
-  //     // setPoolBalance(ethers.utils.formatEther(pool));
-  //   } catch (err) {
-  //     console.log("Error fetching pool balance:", err);
-  //     setPoolBalance(null);
-  //   }
-  // };
-
-  // const fetchPurchasedSeats = async () => {
-  //   if (!signer) return;
-
-  //   const contract = new ethers.Contract(
-  //     TicketNftContractAddress as string,
-  //     TicketNftContract.abi,
-  //     signer
-  //   );
-
-  //   try {
-  //     const nft = await contract.getTicketMetadata(account);
-
-  //     // Before issuance, the NFT array has the following values: nft[0] is tokenId = 0, and nft[1~3] are empty strings ("").
-  //     if (nft[1]) {
-  //       setHasPurchasedTicket(true);
-  //     } else {
-  //       setHasPurchasedTicket(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching purchased seats:", error);
-  //     setHasPurchasedTicket(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getContributionPool();
-  //   fetchPurchasedSeats();
-  // }, []);
+  const hasPurchasedTicket = useHasPurchasedTicket({ chainId, account });
 
   return (
     <div className="grid grid-cols-1 gap-12 my-8">
