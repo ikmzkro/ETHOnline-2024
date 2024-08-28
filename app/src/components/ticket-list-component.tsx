@@ -6,7 +6,7 @@ import { useState } from "react";
 import Image from "next/image";
 import usePoolBalance from "@/hooks/usePoolBalance";
 import { formatCurrency } from "@/lib/utils";
-import useHasPurchasedTicket from "@/hooks/useHasPurchasedTicket";
+import useTicketMetadata from "@/hooks/useTicketMetadata";
 
 interface TicketListProps {
   chainId: number;
@@ -15,7 +15,7 @@ interface TicketListProps {
 
 export function TicketListComponent({ chainId, account }: TicketListProps) {
   const poolBalance = usePoolBalance(chainId as any);
-  // const hasPurchasedTicket = useHasPurchasedTicket({ chainId, account });
+  const nftData = useTicketMetadata({ chainId, account });
 
   const hasPurchasedTicket = true
 

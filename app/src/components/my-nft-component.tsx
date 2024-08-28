@@ -7,12 +7,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import useTicketMetadata from "@/hooks/useTicketMetadata";
 
-interface MyNftProps {}
+interface MyNftProps {
+  chainId: number;
+  account: string;
+}
 
-export function MyNftComponent({}: MyNftProps) {
-  const [nftData, setNftData] = useState<any>(null);
-  const [metaData, setMetaData] = useState<any>(null);
+export function MyNftComponent({ chainId, account }: MyNftProps) {
+  // const [nftData, setNftData] = useState<any>(null);
+  // const [metaData, setMetaData] = useState<any>(null);
+
+  const nftData = useTicketMetadata({ chainId, account });
+  // const metaData = await axios.get(nftData[1] as any);
 
   // useEffect(() => {
   //   const fetchPurchasedSeats = async () => {
@@ -61,8 +68,8 @@ export function MyNftComponent({}: MyNftProps) {
       <Image
         src={metaData?.image || "/placeholder.svg"}
         alt="NFT artwork"
-        width={320} 
-        height={320} 
+        width={320}
+        height={320}
         className="object-cover w-full"
         style={{ aspectRatio: "1/1" }}
       />
