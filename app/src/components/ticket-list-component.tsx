@@ -138,8 +138,10 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
                     id: "jwc-2025-1",
                     teams: "Vissel Kobe vs Tottenham Hotspur FC",
                     matchDate: "2025-08-01",
-                    homeLogo: "/kobe.png",
-                    awayLogo: "/spurs.png",
+                    homeLogo:
+                      "https://lime-giant-dove-621.mypinata.cloud/ipfs/QmTQxbnL6gumkKFUN18Z4SXnpVWuZ32YeEkeZBbiWyiTjp",
+                    awayLogo:
+                      "https://lime-giant-dove-621.mypinata.cloud/ipfs/QmQyw2cykPKZti61URRaUE9m7AUNWSn99yuCvV5qAZLqEs",
                     contributionPool: poolBalance,
                   },
                 }}
@@ -160,8 +162,10 @@ export function TicketListComponent({ account, signer }: TicketListProps) {
                     id: "jwc-2025-1",
                     teams: "Vissel Kobe vs Tottenham Hotspur FC",
                     matchDate: "2025-08-01",
-                    homeLogo: "/kobe.png",
-                    awayLogo: "/spurs.png",
+                    homeLogo:
+                      "https://lime-giant-dove-621.mypinata.cloud/ipfs/QmTQxbnL6gumkKFUN18Z4SXnpVWuZ32YeEkeZBbiWyiTjp",
+                    awayLogo:
+                      "https://lime-giant-dove-621.mypinata.cloud/ipfs/QmQyw2cykPKZti61URRaUE9m7AUNWSn99yuCvV5qAZLqEs",
                     contributionPool: poolBalance,
                   },
                 }}
