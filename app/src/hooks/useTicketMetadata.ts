@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
 import { TicketNftContractAddress } from "@/contracts/constant";
 import TicketNftContract from "../contracts/TicketNft.sol/TicketNft.json";
-import { useReadContract } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 import axios from "axios";
 
-const useTicketMetadata = ({
-  chainId,
-  account,
-}: {
-  chainId: number | undefined;
-  account: string | undefined;
-}) => {
+const useTicketMetadata = () => {
+  const account = useAccount();
   const [metadata, setMetadata] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isPurchased, setIsPurchased] = useState<boolean>(true);
@@ -20,9 +15,9 @@ const useTicketMetadata = ({
   const { data: nftData, isError, isLoading } = useReadContract({
     address: TicketNftContractAddress,
     abi: TicketNftContract.abi,
-    chainId: 88882,
+    chainId: account.chainId,
     functionName: "getTicketMetadata",
-    args: ['0xa2fb2553e57436b455F57270Cc6f56f6dacDA1a5'],
+    args: [account.address],
   });
   const nftdata: any = nftData;
 

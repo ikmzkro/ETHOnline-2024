@@ -4,13 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import useTicketMetadata from "@/hooks/useTicketMetadata";
 
-interface MyNftProps {
-  chainId: number;
-  account: string;
-}
-
-export function MyNftComponent({ chainId, account }: MyNftProps) {
-  const res: any = useTicketMetadata({ chainId, account });
+export function MyNftComponent() {
+  const res: any = useTicketMetadata();
 
   if (!res.metadata) {
     return (

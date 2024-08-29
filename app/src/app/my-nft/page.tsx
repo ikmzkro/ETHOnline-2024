@@ -8,10 +8,7 @@ export default function MyNft() {
   return (
     <>
       <HeaderComponent />
-      <MyNftComponent
-        chainId={88882}
-        account="0xa2fb2553e57436b455F57270Cc6f56f6dacDA1a5"
-      />
+      <MyNftComponent />
       <FooterComponent />
     </>
   );

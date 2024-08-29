@@ -2,20 +2,16 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useState } from "react";
 import Image from "next/image";
-import usePoolBalance from "@/hooks/usePoolBalance";
 import { formatCurrency } from "@/lib/utils";
 import useTicketMetadata from "@/hooks/useTicketMetadata";
+import usePoolBalance from "@/hooks/usePoolBalance";
 
-interface TicketListProps {
-  chainId: number;
-  account: string;
-}
+interface TicketListProps {}
 
-export function TicketListComponent({ chainId, account }: TicketListProps) {
-  const poolBalance = usePoolBalance(chainId as any);
-  const res = useTicketMetadata({ chainId, account });
+export function TicketListComponent() {
+  const poolBalance = usePoolBalance();
+  const res = useTicketMetadata();
   const hasPurchased = res?.isPurchased;
 
   return (

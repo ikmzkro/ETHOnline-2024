@@ -1,12 +1,9 @@
 import {FanTokenContractAddress} from "@/contracts/constant";
 import FanToken from "../contracts/FanToken.sol/FanToken.json";
-import { useReadContract } from 'wagmi';
+import { useChainId, useReadContract } from 'wagmi';
 
-const usePoolBalance = ({
-  chainId,
-}: {
-  chainId: number | undefined;
-}) => {
+const usePoolBalance = () => {
+  const chainId = useChainId();
   const { data: usePoolBalancelance } = useReadContract({
     address: FanTokenContractAddress,
     abi: FanToken.abi,

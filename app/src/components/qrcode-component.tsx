@@ -4,7 +4,6 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import useTicketMetadata from "@/hooks/useTicketMetadata";
-import { useRouter } from "next/router";
 import QRCode from "qrcode.react";
 
 interface QRCodeComponentProps {}
@@ -14,9 +13,7 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   // const router = useRouter();
   // const { nftData, metaData } = router.query;
 
-  const chainId = 88882;
-  const account = "0xa2fb2553e57436b455F57270Cc6f56f6dacDA1a5";
-  const res: any = useTicketMetadata({ chainId, account });
+  const res: any = useTicketMetadata();
 
   if (!res.metadata) {
     return (
