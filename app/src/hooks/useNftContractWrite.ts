@@ -56,7 +56,6 @@ const useHatContractWrite = <T extends ValidFunctionName>({
     if (!enabled || !chainId || userChainId !== chainId) return null;
     setIsLoading(true);
 
-    // @ts-expect-error - not totally sure what is wrong with the union type here
     return writeContractAsync({
       address: TicketNftContractAddress,
       chainId: Number(chainId),
