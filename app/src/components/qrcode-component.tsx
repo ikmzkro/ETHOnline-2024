@@ -10,7 +10,9 @@ import useSelfClaim from "@/hooks/useSelfClaim";
 import { useState } from "react";
 import useSeatNumbers from "@/hooks/useSeatNumbers";
 import useSeatReceivers from "@/hooks/useSeatReceivers";
-import { getRewardPairs } from "@/lib/utils";
+import { getReward } from "@/lib/utils";
+import usePoolBalance from "@/hooks/usePoolBalance";
+import { useAccount } from "wagmi";
 
 interface QRCodeComponentProps {}
 
@@ -18,12 +20,14 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   // Error: NextRouter was not mounted. https://nextjs.org/docs/messages/next-router-not-mounted
   // const router = useRouter();
   // const { nftData, metaData } = router.query;
-  const [claimAmount, setClaimAmount] = useState('');
+  const { address } = useAccount();
+  const [claimAmount, setClaimAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const res: any = useTicketMetadata();
+  const poolBalance = usePoolBalance();
   const purchasedSeats = useSeatNumbers();
   const nftOwners = useSeatReceivers();
-  const resSelfClaim = useSelfClaim(claimAmount);
+  const resSelfClaim = useSelfClaim(1000);
 
   if (!res.metadata) {
     return (
@@ -92,13 +96,14 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
                     try {
                       const fetch = async () => {
                         // Calculate selfClaimAmount by SeatNumber, SeatRole
-                        const sendRequests = await getRewardPairs(
+                        const sendRequests = await getReward(
                           purchasedSeats as any,
                           nftOwners as any,
-                          1
+                          poolBalance?.toString() as any,
+                          address as any
                         );
                         console.log("sendRequests", sendRequests);
-                        setClaimAmount('1')
+                        setClaimAmount(sendRequests as any);
                         await resSelfClaim.writeAsync();
                       };
                       fetch();

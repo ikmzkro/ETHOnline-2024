@@ -21,15 +21,15 @@ export function formatCurrency(amount: string | undefined): string {
   }).format(numberValue as any);
 }
 
-// `totalPool`: The total amount (e.g., 1 totalPool) is taken as an argument.
+// `poolBalance`: The total amount (e.g., 1 poolBalance) is taken as an argument.
 // The rewards are self-claimed as follows: 30% to the leader, 10% to the drum, 10% divided equally among the flag bearers, and 50% to the fans.
 // For the fans, those seated closer to the leader's seat receive higher rewards, which are self-claimed based on the seat weighting.
-const selfClaimRewards = async (totalPool: number): Promise<Seat[]> => {
+const selfClaimRewards = async (poolBalance: number): Promise<Seat[]> => {
   try {
-    const leaderReward = totalPool * 0.3;
-    const drumReward = totalPool * 0.1;
-    const flagReward = (totalPool * 0.1) / 8; // Equally divided among flag bearers
-    const fanTotalReward = totalPool * 0.5;
+    const leaderReward = poolBalance * 0.3;
+    const drumReward = poolBalance * 0.1;
+    const flagReward = (poolBalance * 0.1) / 8; // Equally divided among flag bearers
+    const fanTotalReward = poolBalance * 0.5;
     const fansStart = 11;
     const seatsPerRow = 10;
     const fanSeats: Seat[] = [];
@@ -68,21 +68,49 @@ const selfClaimRewards = async (totalPool: number): Promise<Seat[]> => {
   }
 };
 
-export async function getRewardPairs(
+// 管理者側から一括で分配する際の関数
+export async function getAddressAndRewardPairs(
   seatNumbers: string[],
   walletAddresses: string[],
-  totalETH: number
+  poolBalance: number
 ) {
   try {
-    const seats = await selfClaimRewards(totalETH);
+    const seats = await selfClaimRewards(poolBalance);
 
-    const rewardPairs = seatNumbers.map((seatNumber, index) => {
+    const addressAndRewardPairs = seatNumbers.map((seatNumber, index) => {
       const seat = seats.find((s) => s.seatNumber === parseInt(seatNumber));
       const reward = seat ? seat.reward : 0;
       return [walletAddresses[index], reward];
     });
 
-    return rewardPairs;
+    return addressAndRewardPairs;
+  } catch (error) {
+    console.error("Error generating reward pairs:", error);
+    throw error;
+  }
+}
+
+
+// ユーザの報酬金額を計算する関数
+export async function getReward(
+  seatNumbers: string[],
+  walletAddresses: string[],
+  poolBalance: number,
+  claimer: string
+) {
+  try {
+    const seats = await selfClaimRewards(poolBalance);
+    const addressAndRewardPairs = seatNumbers.map((seatNumber, index) => {
+      const seat = seats.find((s) => s.seatNumber === parseInt(seatNumber));
+      const reward = seat ? seat.reward : 0;
+      return [walletAddresses[index], reward];
+    });
+
+    // TODO: 一人の座席に対する報酬を計算する関数を用意
+    console.log('addressAndRewardPairs', addressAndRewardPairs);
+    // Find the pair with the matching address
+    const amount = addressAndRewardPairs.find(([address]) => address === claimer)?.[1];
+    return amount;
   } catch (error) {
     console.error("Error generating reward pairs:", error);
     throw error;

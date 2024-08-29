@@ -12,13 +12,12 @@ interface Seat {
 const useSelfClaim = (claimAmount?: any) => {
   const currentNetworkId = useChainId();
 
-
   /**
    * PoolをSelfClaimするメソッド
    */
   const {writeAsync, isLoading} = useFanTokenContractWrite({
     functionName: "withdraw" as ValidFunctionName,
-    args: [claimAmount],
+    args: [Number(claimAmount)],
     chainId: currentNetworkId,
     enabled: currentNetworkId === 88882,
   });
