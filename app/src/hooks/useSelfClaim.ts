@@ -1,25 +1,24 @@
 import {useAccount, useChainId} from "wagmi";
-import useHatContractWrite, { ValidFunctionName } from "./useNftContractWrite";
-import { VisselKobeVSTottenhamHotspurFCTokenURI } from "@/contracts/constant";
-import useSeatNumbers from "./useSeatNumbers";
-import useSeatReceivers from "./useSeatReceivers";
+import useFanTokenContractWrite, { ValidFunctionName } from "./useFanTokenContractWrite";
 
-const useSelfClaim = (nftdata?: any) => {
+type SeatType = "leader" | "drum" | "flag" | "fan";
+
+interface Seat {
+  seatNumber: number;
+  type: SeatType;
+  reward: number;
+}
+
+const useSelfClaim = (claimAmount?: any) => {
   const currentNetworkId = useChainId();
-  console.log('nftdata', nftdata);
 
-  const purchasedSeats = useSeatNumbers();
-  const nftOwners = useSeatReceivers();
-
-  console.log('purchasedSeats', purchasedSeats);
-  console.log('nftOwners', nftOwners);
 
   /**
    * PoolをSelfClaimするメソッド
    */
-  const {writeAsync, isLoading} = useHatContractWrite({
+  const {writeAsync, isLoading} = useFanTokenContractWrite({
     functionName: "withdraw" as ValidFunctionName,
-    args: ['1'],
+    args: [claimAmount],
     chainId: currentNetworkId,
     enabled: currentNetworkId === 88882,
   });

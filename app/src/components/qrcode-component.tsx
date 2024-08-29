@@ -7,6 +7,10 @@ import useTicketMetadata from "@/hooks/useTicketMetadata";
 import QRCode from "qrcode.react";
 import { Button } from "./ui/button";
 import useSelfClaim from "@/hooks/useSelfClaim";
+import { useState } from "react";
+import useSeatNumbers from "@/hooks/useSeatNumbers";
+import useSeatReceivers from "@/hooks/useSeatReceivers";
+import { getRewardPairs } from "@/lib/utils";
 
 interface QRCodeComponentProps {}
 
@@ -14,9 +18,12 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   // Error: NextRouter was not mounted. https://nextjs.org/docs/messages/next-router-not-mounted
   // const router = useRouter();
   // const { nftData, metaData } = router.query;
-
+  const [claimAmount, setClaimAmount] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
   const res: any = useTicketMetadata();
-  const resSelfClaim = useSelfClaim(res.nftdata);
+  const purchasedSeats = useSeatNumbers();
+  const nftOwners = useSeatReceivers();
+  const resSelfClaim = useSelfClaim(claimAmount);
 
   if (!res.metadata) {
     return (
@@ -79,7 +86,30 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
                 </span>
               </div>
               <div className="flex flex-col items-right pt-8 text-white rounded-t-lg">
-                <Button size="sm">{"Self Claim"}</Button>
+                <Button
+                  onClick={() => {
+                    setIsProcessing(true);
+                    try {
+                      const fetch = async () => {
+                        // Calculate selfClaimAmount by SeatNumber, SeatRole
+                        const sendRequests = await getRewardPairs(
+                          purchasedSeats as any,
+                          nftOwners as any,
+                          1
+                        );
+                        console.log("sendRequests", sendRequests);
+                        setClaimAmount('1')
+                        await resSelfClaim.writeAsync();
+                      };
+                      fetch();
+                    } catch (error) {
+                      alert(error);
+                    }
+                  }}
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? "Processing..." : "Self Claim"}
+                </Button>
               </div>
             </div>
           </div>
