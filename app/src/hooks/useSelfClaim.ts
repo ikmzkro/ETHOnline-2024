@@ -9,15 +9,16 @@ interface Seat {
   reward: number;
 }
 
-const useSelfClaim = (claimAmount?: any) => {
-  const currentNetworkId = useChainId();
+const useSelfClaim = (claimAmount: any) => {
 
+  const currentNetworkId = useChainId();
   /**
    * PoolをSelfClaimするメソッド
    */
+  console.log('claimAmount', claimAmount);
   const {writeAsync, isLoading} = useFanTokenContractWrite({
     functionName: "withdraw" as ValidFunctionName,
-    args: [Number(claimAmount)],
+    args: [claimAmount],
     chainId: currentNetworkId,
     enabled: currentNetworkId === 88882,
   });

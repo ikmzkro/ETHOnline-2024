@@ -7,7 +7,7 @@ import {IFanToken} from "./interface/IFanToken.sol";
 
 contract FanToken is ERC20, ReentrancyGuard, IFanToken {
     constructor() ERC20("FanToken", "FT") {
-        _mint(address(this), 10000_000_000_000_000_000_000); 
+        _mint(address(this), 100000); 
     }
 
     /**

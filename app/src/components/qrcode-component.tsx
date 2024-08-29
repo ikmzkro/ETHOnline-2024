@@ -7,12 +7,13 @@ import useTicketMetadata from "@/hooks/useTicketMetadata";
 import QRCode from "qrcode.react";
 import { Button } from "./ui/button";
 import useSelfClaim from "@/hooks/useSelfClaim";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSeatNumbers from "@/hooks/useSeatNumbers";
 import useSeatReceivers from "@/hooks/useSeatReceivers";
 import { getReward } from "@/lib/utils";
 import usePoolBalance from "@/hooks/usePoolBalance";
 import { useAccount } from "wagmi";
+import useRewardBalance from "@/hooks/useRewardBalance";
 
 interface QRCodeComponentProps {}
 
@@ -21,13 +22,14 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   // const router = useRouter();
   // const { nftData, metaData } = router.query;
   const { address } = useAccount();
-  const [claimAmount, setClaimAmount] = useState("");
+  const [claimAmount, setClaimAmount] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const res: any = useTicketMetadata();
   const poolBalance = usePoolBalance();
+  const rewardBalance = useRewardBalance();
   const purchasedSeats = useSeatNumbers();
   const nftOwners = useSeatReceivers();
-  const resSelfClaim = useSelfClaim(1000);
+  const resSelfClaim = useSelfClaim(Math.floor(Number(claimAmount)));
 
   if (!res.metadata) {
     return (
@@ -38,6 +40,20 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   }
 
   const qrValue = JSON.stringify(res.metadata);
+
+  const renderMessage = (isProcessing: any, rewardBalance: any) => {
+    if (isProcessing) {
+      return "Processing...";
+    }
+
+    if (rewardBalance) {
+      return `${rewardBalance.toString()} FanToken has been distributed to your address.`;
+    }
+
+    return "Self Claim";
+  };
+
+  const buttonName = renderMessage(isProcessing, rewardBalance);
 
   return (
     <>
@@ -103,17 +119,24 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
                           address as any
                         );
                         console.log("sendRequests", sendRequests);
-                        setClaimAmount(sendRequests as any);
-                        await resSelfClaim.writeAsync();
+                        const amount = Math.floor(Number(sendRequests));
+                        setClaimAmount(amount);
+
+                        // Check if claimAmount is greater than 0 before calling writeAsync
+                        if (amount > 0) {
+                          await resSelfClaim.writeAsync();
+                        } else {
+                          alert("Claim amount must be greater than 0");
+                        }
                       };
                       fetch();
                     } catch (error) {
                       alert(error);
                     }
                   }}
-                  disabled={isProcessing}
+                  disabled={isProcessing || rewardBalance}
                 >
-                  {isProcessing ? "Processing..." : "Self Claim"}
+                  {buttonName}
                 </Button>
               </div>
             </div>
