@@ -3,12 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import useTicketMetadata from "@/hooks/useTicketMetadata";
+import useMintTicketNft from "@/hooks/useMintTicketNft";
 
 interface TicketBookingComponentProps {}
 
 export function TicketBookingComponent({}: TicketBookingComponentProps) {
   const res = useTicketMetadata();
-  const hasPurchased = res.metadata === "null";
+  const resMint = useMintTicketNft();
+  console.log("resMint", resMint);
+
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
