@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import useTicketMetadata from "@/hooks/useTicketMetadata";
 import useMintTicketNft from "@/hooks/useMintTicketNft";
+import useSeatNumbers from "@/hooks/useSeatNumbers";
 
 interface TicketBookingComponentProps {}
 
 export function TicketBookingComponent({}: TicketBookingComponentProps) {
-  const res = useTicketMetadata();
-
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [purchasedSeats, setPurchasedSeats] = useState<number[]>([]);
+  const purchasedSeats = useSeatNumbers();
   const resMint = useMintTicketNft(selectedSeat, selectedRole);
 
   const handleSeatClick = (seatNumber: number) => {
@@ -42,7 +40,7 @@ export function TicketBookingComponent({}: TicketBookingComponentProps) {
               <div className="grid grid-cols-10 gap-2">
                 {Array.from({ length: 100 }, (_, i) => {
                   const seatNumber: string = (i + 1).toString();
-                  const isPurchased = purchasedSeats.includes(
+                  const isPurchased = purchasedSeats?.includes(
                     seatNumber as any
                   );
 
@@ -109,8 +107,7 @@ export function TicketBookingComponent({}: TicketBookingComponentProps) {
                       setIsProcessing(true);
                       try {
                         const fetch = async () => {
-                          const res = await resMint.writeAsync();
-                          console.log("res", res);
+                          await resMint.writeAsync();
                         };
                         fetch();
                       } catch (error) {

@@ -67,6 +67,7 @@ const useHatContractWrite = <T extends ValidFunctionName>({
       toast.info('Waiting for your transaction to be accepted...');
 
       const receipt = await waitForTransactionReceipt(wagmiConfig, { chainId: chainId as any, hash });
+      console.log('receipt', receipt);
       
       const decodedLogs = receipt.logs.map((log) => {
         return decodeEventLog({
@@ -75,15 +76,9 @@ const useHatContractWrite = <T extends ValidFunctionName>({
          topics: log.topics
        })
       })
+      console.log('decodedLogs', decodedLogs);
       toast.info('Transaction submitted');
-      if (functionName === 'mintTopHat' || functionName === 'createHat'){
-        // @ts-ignore
-        return decodedLogs[0].args?.id;
-      } else if(functionName === 'mintHat'){
-        console.log('decodedLogs[0].args', decodedLogs[0].args);
-        // @ts-ignore
-        return decodedLogs[0].args?.amount
-      }
+      router.push('/')
     }).catch((error) => {
       alert('Error!')
       console.log('Error!!', error);
