@@ -88,10 +88,6 @@ export function TicketListComponent() {
                 </Button>
               </Link>
             </div>
-
-            <div className="flex items-center gap-4">
-              <Button size="sm">{"Self Claim"}</Button>
-            </div>
           </div>
         </CardContent>
       </Card>

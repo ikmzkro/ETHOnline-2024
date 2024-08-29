@@ -5,6 +5,7 @@
  */
 import useTicketMetadata from "@/hooks/useTicketMetadata";
 import QRCode from "qrcode.react";
+import { Button } from "./ui/button";
 
 interface QRCodeComponentProps {}
 
@@ -74,6 +75,9 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
                 <span className="font-bold text-right">
                   {res.metadata?.kickoffTime}
                 </span>
+              </div>
+              <div className="flex flex-col items-right pt-8 text-white rounded-t-lg">
+                <Button size="sm">{"Self Claim"}</Button>
               </div>
             </div>
           </div>
