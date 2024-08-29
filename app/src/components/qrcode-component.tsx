@@ -6,6 +6,7 @@
 import useTicketMetadata from "@/hooks/useTicketMetadata";
 import QRCode from "qrcode.react";
 import { Button } from "./ui/button";
+import useSelfClaim from "@/hooks/useSelfClaim";
 
 interface QRCodeComponentProps {}
 
@@ -15,6 +16,7 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   // const { nftData, metaData } = router.query;
 
   const res: any = useTicketMetadata();
+  const resSelfClaim = useSelfClaim(res.nftdata);
 
   if (!res.metadata) {
     return (

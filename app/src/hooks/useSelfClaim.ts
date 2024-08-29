@@ -1,18 +1,25 @@
 import {useAccount, useChainId} from "wagmi";
 import useHatContractWrite, { ValidFunctionName } from "./useNftContractWrite";
 import { VisselKobeVSTottenhamHotspurFCTokenURI } from "@/contracts/constant";
+import useSeatNumbers from "./useSeatNumbers";
+import useSeatReceivers from "./useSeatReceivers";
 
-const useSelfClaim = (selectedSeat?: any, selectedRole?: any) => {
-  const {address} = useAccount();
-  const imageURI = VisselKobeVSTottenhamHotspurFCTokenURI
+const useSelfClaim = (nftdata?: any) => {
   const currentNetworkId = useChainId();
-  const seatNumber = parseInt(selectedSeat?.replace("Seat ", ""), 10);
+  console.log('nftdata', nftdata);
+
+  const purchasedSeats = useSeatNumbers();
+  const nftOwners = useSeatReceivers();
+
+  console.log('purchasedSeats', purchasedSeats);
+  console.log('nftOwners', nftOwners);
+
   /**
-   * TicketNftをMintするメソッド
+   * PoolをSelfClaimするメソッド
    */
   const {writeAsync, isLoading} = useHatContractWrite({
-    functionName: "safeMint" as ValidFunctionName,
-    args: [address!, imageURI, String(seatNumber), selectedRole],
+    functionName: "withdraw" as ValidFunctionName,
+    args: ['1'],
     chainId: currentNetworkId,
     enabled: currentNetworkId === 88882,
   });
