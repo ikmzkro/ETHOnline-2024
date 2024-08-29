@@ -10,8 +10,8 @@ interface Seat {
 }
 
 const useSelfClaim = (claimAmount: any) => {
-
   const currentNetworkId = useChainId();
+  const shouldEnable = claimAmount !== undefined && claimAmount > 0;
   /**
    * PoolをSelfClaimするメソッド
    */
@@ -20,7 +20,7 @@ const useSelfClaim = (claimAmount: any) => {
     functionName: "withdraw" as ValidFunctionName,
     args: [claimAmount],
     chainId: currentNetworkId,
-    enabled: currentNetworkId === 88882,
+    enabled: shouldEnable && currentNetworkId === 88882,
   });
 
   return {writeAsync, isLoading};

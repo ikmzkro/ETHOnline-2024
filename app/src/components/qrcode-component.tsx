@@ -29,7 +29,15 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   const rewardBalance = useRewardBalance();
   const purchasedSeats = useSeatNumbers();
   const nftOwners = useSeatReceivers();
-  const resSelfClaim = useSelfClaim(Math.floor(Number(claimAmount)));
+
+  const resSelfClaim = useSelfClaim(claimAmount);
+
+  useEffect(() => {
+    // Ensure `claimAmount` is updated before calling `resSelfClaim.writeAsync`
+    if (claimAmount > 0) {
+      resSelfClaim?.writeAsync();
+    }
+  }, [claimAmount > 0]);
 
   if (!res.metadata) {
     return (
@@ -38,7 +46,6 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
       </div>
     );
   }
-
   const qrValue = JSON.stringify(res.metadata);
 
   const renderMessage = (isProcessing: any, rewardBalance: any) => {
@@ -54,6 +61,8 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   };
 
   const buttonName = renderMessage(isProcessing, rewardBalance);
+  // Convert rewardBalance to boolean for the disabled prop
+  const isDisabled = isProcessing || Boolean(rewardBalance);
 
   return (
     <>
@@ -134,7 +143,7 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
                       alert(error);
                     }
                   }}
-                  disabled={isProcessing || rewardBalance}
+                  disabled={isDisabled}
                 >
                   {buttonName}
                 </Button>
