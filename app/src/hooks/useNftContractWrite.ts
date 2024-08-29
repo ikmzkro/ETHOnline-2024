@@ -78,6 +78,7 @@ const useHatContractWrite = <T extends ValidFunctionName>({
       })
       console.log('decodedLogs', decodedLogs);
       toast.info('Transaction submitted');
+      // TODO: Mint -> My Ticket Nft Page
       router.push('/')
     }).catch((error) => {
       alert('Error!')
