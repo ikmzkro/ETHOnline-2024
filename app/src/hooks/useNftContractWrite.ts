@@ -38,7 +38,7 @@ interface ContractInteractionProps<T extends ValidFunctionName> {
   waitForSubgraph?: (data?: TransactionReceipt) => void; // passed with handleSuccess
 }
 
-const useHatContractWrite = <T extends ValidFunctionName>({
+const useNftContractWrite = <T extends ValidFunctionName>({
   functionName,
   args,
   chainId,
@@ -109,6 +109,6 @@ const useHatContractWrite = <T extends ValidFunctionName>({
   };
 };
 
-export default useHatContractWrite;
+export default useNftContractWrite;
 
 

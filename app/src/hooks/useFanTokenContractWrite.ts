@@ -36,7 +36,7 @@ interface ContractInteractionProps<T extends ValidFunctionName> {
   waitForSubgraph?: (data?: TransactionReceipt) => void; // passed with handleSuccess
 }
 
-const useHatContractWrite = <T extends ValidFunctionName>({
+const useFanTokenContractWrite = <T extends ValidFunctionName>({
   functionName,
   args,
   chainId,
@@ -75,8 +75,7 @@ const useHatContractWrite = <T extends ValidFunctionName>({
       })
       console.log('decodedLogs', decodedLogs);
       toast.info('Transaction submitted');
-      // TODO: Mint -> My Ticket Nft Page
-      router.push('/')
+      window.location.reload()
     }).catch((error) => {
       alert('Error!')
       console.log('Error!!', error);
@@ -107,6 +106,6 @@ const useHatContractWrite = <T extends ValidFunctionName>({
   };
 };
 
-export default useHatContractWrite;
+export default useFanTokenContractWrite;
 
 
