@@ -12,7 +12,11 @@ interface TicketListProps {}
 export function TicketListComponent() {
   const poolBalance = usePoolBalance();
   const res = useTicketMetadata();
-  const hasPurchased = res?.isPurchased;
+
+  // TODO: 恥ずべきスパゲティコード🍝
+  const hasPurchased =
+    res.metadata === "null" ||
+    res.metadata?.description === "J.League World Challenge 2025";
 
   return (
     <div className="grid grid-cols-1 gap-12 my-8">
@@ -28,6 +32,7 @@ export function TicketListComponent() {
                 className="rounded-full"
                 style={{ objectFit: "cover" }}
               />
+              {/* TODO: 恥ずべきスパゲティコード🍝 */}
               <div>
                 <h3 className="text-lg font-semibold">
                   {"Vissel Kobe vs Tottenham Hotspur FC"}
@@ -60,6 +65,7 @@ export function TicketListComponent() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              {/* TODO: 恥ずべきスパゲティコード🍝 */}
               <Link
                 key={"jwc-2025-1"}
                 href={{

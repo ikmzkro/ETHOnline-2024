@@ -33,9 +33,9 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
             <h2 className="text-lg font-bold">MATCH INFO</h2>
           </div>
           <div className="w-full p-4">
-            <p className="text-lg font-bold">{res.metaData?.matchDate}</p>
-            <p className="text-sm text-gray-500">{res.metaData?.description}</p>
-            <p className="text-lg font-semibold mt-2">{res.metaData?.name}</p>
+            <p className="text-lg font-bold">{res.metadata?.matchDate}</p>
+            <p className="text-sm text-gray-500">{res.metadata?.description}</p>
+            <p className="text-lg font-semibold mt-2">{res.metadata?.name}</p>
             <div className="flex items-center justify-between w-full p-4 mt-4 bg-gray-100 rounded-lg">
               <div>
                 <p className="text-sm text-gray-500">Role</p>
@@ -43,7 +43,7 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
               </div>
               <div>
                 <p className="text-sm text-gray-500">Entry Gate</p>
-                <p className="text-lg font-bold">{res.metaData?.entryGate}</p>
+                <p className="text-lg font-bold">{res.metadata?.entryGate}</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500">Seat</p>
@@ -60,19 +60,19 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
               <div className="flex justify-between">
                 <span>Venue</span>
                 <span className="font-bold text-right">
-                  {res.metaData?.stadiumName}
+                  {res.metadata?.stadiumName}
                 </span>
               </div>
               <div className="flex justify-between mt-2">
                 <span>Opening Time</span>
                 <span className="font-bold text-right">
-                  {res.metaData?.openingTime}
+                  {res.metadata?.openingTime}
                 </span>
               </div>
               <div className="flex justify-between mt-2">
                 <span>Kickoff Time</span>
                 <span className="font-bold text-right">
-                  {res.metaData?.kickoffTime}
+                  {res.metadata?.kickoffTime}
                 </span>
               </div>
             </div>

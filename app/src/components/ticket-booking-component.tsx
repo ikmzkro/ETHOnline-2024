@@ -1,43 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import useTicketMetadata from "@/hooks/useTicketMetadata";
 
 interface TicketBookingComponentProps {}
 
 export function TicketBookingComponent({}: TicketBookingComponentProps) {
+  const res = useTicketMetadata();
+  const hasPurchased = res.metadata === "null";
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [purchasedSeats, setPurchasedSeats] = useState<number[]>([]);
-  const [metaData, setMetaData] = useState<any>(null);
-
-  // useEffect(() => {
-  //   const fetchPurchasedSeats = async () => {
-  //     if (!signer) return;
-
-  //     const contract = new ethers.Contract(
-  //       TicketNftContractAddress as string,
-  //       TicketNftContract.abi,
-  //       signer
-  //     );
-
-  //     try {
-  //       const purchasedSeats = await contract.getUsedSeatNumbers();
-  //       setPurchasedSeats(purchasedSeats);
-
-  //       const metaData = await axios.get(
-  //         VisselKobeVSTottenhamHotspurFCTokenURI as any
-  //       );
-
-  //       setMetaData(metaData.data);
-  //     } catch (error) {
-  //       console.error("Error fetching purchased seats:", error);
-  //     }
-  //   };
-
-  //   fetchPurchasedSeats();
-  // }, [signer]);
 
   const handleSeatClick = (seatNumber: number) => {
     const seatNum = Number(seatNumber);
@@ -148,33 +123,34 @@ export function TicketBookingComponent({}: TicketBookingComponentProps) {
             </div>
           </div>
           <div>
+            {/* TODO: 恥ずべきスパゲティコード🍝 */}
             <h2 className="text-2xl font-bold mb-4">Selected Seats</h2>
             <Card>
               <CardContent>
                 <div className="grid gap-4">
                   <div className="grid gap-2 mt-4">
                     <Label htmlFor="team">Teams</Label>
-                    <div>{metaData?.name}</div>
+                    <div> {"Vissel Kobe vs Tottenham Hotspur FC"}</div>
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="stadium-name">Stadium Name</Label>
-                    <div>{metaData?.stadiumName}</div>
+                    <div>{"Japan National Stadium"}</div>
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="stadium-name">Entry Gate</Label>
-                    <div>{metaData?.entryGate}</div>
+                    <div>{"A GATE"}</div>
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="date">Match Date</Label>
-                    <div>{metaData?.matchDate}</div>
+                    <div>{"2025-08-01"}</div>
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="opening-time">Opening Time</Label>
-                    <div>{metaData?.openingTime}</div>
+                    <div>{"17:00"}</div>
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="kickoff-time">Kickoff Time</Label>
-                    <div>{metaData?.kickoffTime}</div>
+                    <div>{"19:00"}</div>
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="seat">Seat Number</Label>

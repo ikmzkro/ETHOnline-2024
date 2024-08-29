@@ -8,7 +8,6 @@ const useTicketMetadata = () => {
   const account = useAccount();
   const [metadata, setMetadata] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isPurchased, setIsPurchased] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch data from the contract using useReadContract hook
@@ -19,13 +18,15 @@ const useTicketMetadata = () => {
     functionName: "getTicketMetadata",
     args: [account.address],
   });
-  const nftdata: any = nftData;
+
+  const nftdata: any = nftData
 
   useEffect(() => {
     const fetchMetadata = async () => {
-      if (!nftdata || !nftdata[1]) return; // Handle case where nftdata or URL is not present
-      const isPurchased = nftdata[0]?.toString() !== '0'; // Check if purchased
-      setIsPurchased(isPurchased);
+      if (!nftData || !nftdata[1]) {
+        console.log("nftdata is not available:", nftdata);
+        return; // Handle case where nftdata or URL is not present
+      }
 
       try {
         setLoading(true);
@@ -42,7 +43,12 @@ const useTicketMetadata = () => {
     fetchMetadata();
   }, [nftdata]);
 
-  return { isPurchased, metadata, nftdata, loading: isLoading || loading, error: isError || error };
+  return {
+    metadata,
+    nftdata,
+    loading: isLoading || loading,
+    error: isError || error,
+  };
 };
 
 export default useTicketMetadata;
