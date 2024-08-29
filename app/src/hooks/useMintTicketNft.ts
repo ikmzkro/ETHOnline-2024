@@ -1,18 +1,23 @@
-import {FanTokenContractAddress} from "@/contracts/constant";
-import FanToken from "../contracts/FanToken.sol/FanToken.json";
-import { useChainId, useReadContract } from 'wagmi';
+import {useAccount, useChainId} from "wagmi";
+import useHatContractWrite, { ValidFunctionName } from "./useNftContractWrite";
+import { VisselKobeVSTottenhamHotspurFCTokenURI } from "@/contracts/constant";
 
-const useMintTicketNft = () => {
-  const chainId = useChainId();
-  const { data: useMintTicketNft } = useReadContract({
-    address: FanTokenContractAddress,
-    abi: FanToken.abi,
-    chainId,
-    functionName: 'balanceOf',
-    args: [FanTokenContractAddress],
+const useMintTicketNft = (selectedSeat?: any, selectedRole?: any) => {
+  const {address} = useAccount();
+  const imageURI = VisselKobeVSTottenhamHotspurFCTokenURI
+  const currentNetworkId = useChainId();
+  const seatNumber = parseInt(selectedSeat?.replace("Seat ", ""), 10);
+  /**
+   * TicketNftをMintするメソッド
+   */
+  const {writeAsync, isLoading} = useHatContractWrite({
+    functionName: "safeMint" as ValidFunctionName,
+    args: [address!, imageURI, String(seatNumber), selectedRole],
+    chainId: currentNetworkId,
+    enabled: currentNetworkId === 88882,
   });
 
-  return useMintTicketNft as string | undefined;
+  return {writeAsync, isLoading};
 };
 
 export default useMintTicketNft;

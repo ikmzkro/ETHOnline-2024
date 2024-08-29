@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -9,13 +9,12 @@ interface TicketBookingComponentProps {}
 
 export function TicketBookingComponent({}: TicketBookingComponentProps) {
   const res = useTicketMetadata();
-  const resMint = useMintTicketNft();
-  console.log("resMint", resMint);
 
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [purchasedSeats, setPurchasedSeats] = useState<number[]>([]);
+  const resMint = useMintTicketNft(selectedSeat, selectedRole);
 
   const handleSeatClick = (seatNumber: number) => {
     const seatNum = Number(seatNumber);
@@ -31,66 +30,6 @@ export function TicketBookingComponent({}: TicketBookingComponentProps) {
       setSelectedRole("fan");
     }
   };
-
-  // const mint = async () => {
-  //   try {
-  //     // if (!signer) {
-  //     //   console.error("Signer is not available");
-  //     //   alert("Signer is not available");
-  //     //   return;
-  //     // }
-
-  //     if (!selectedSeat) {
-  //       alert("Please select a seat number");
-  //       return;
-  //     }
-
-  //     const seatNumber = parseInt(selectedSeat.replace("Seat ", ""), 10);
-
-  //     const contract = new ethers.Contract(
-  //       TicketNftContractAddress as string,
-  //       TicketNftContract.abi,
-  //       signer
-  //     );
-
-  //     if (!contract) {
-  //       console.error("Contract with MetaMask is not initialized");
-  //       alert("Contract with MetaMask is not initialized");
-  //       return;
-  //     }
-
-  //     const contractTx = await contract.safeMint(
-  //       account,
-  //       VisselKobeVSTottenhamHotspurFCTokenURI,
-  //       String(seatNumber),
-  //       selectedRole,
-  //       {
-  //         gasLimit: 1000000,
-  //       }
-  //     );
-
-  //     try {
-  //       setIsProcessing(true);
-  //       alert("Transaction is processing...");
-  //       const res = await contractTx.wait();
-  //       if (res.transactionHash) {
-  //         console.log("Transaction successful:", res.transactionHash);
-  //         alert("Transaction successful!");
-  //         // Navigate to the TOP page after success
-  //         // TODO: router.push("/my-nft");
-  //         // () => navigateTo("/my-nft");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error while waiting for the transaction:", error);
-  //       alert("Error while waiting for the transaction: " + error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during mint transaction:", error);
-  //     alert("Error during mint: " + error);
-  //   } finally {
-  //     setIsProcessing(false);
-  //   }
-  // };
 
   return (
     <>
@@ -167,7 +106,16 @@ export function TicketBookingComponent({}: TicketBookingComponentProps) {
                 <div className="mt-4">
                   <Button
                     onClick={() => {
-                      console.log("sa");
+                      setIsProcessing(true);
+                      try {
+                        const fetch = async () => {
+                          const res = await resMint.writeAsync();
+                          console.log("res", res);
+                        };
+                        fetch();
+                      } catch (error) {
+                        alert(error);
+                      }
                     }}
                     disabled={isProcessing}
                   >
