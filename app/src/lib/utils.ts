@@ -29,7 +29,7 @@ export function formatCurrency(amount: string | undefined): string {
 // `poolBalance`: The total amount (e.g., 1 poolBalance) is taken as an argument.
 // The rewards are self-claimed as follows: 30% to the leader, 10% to the drum, 10% divided equally among the flag bearers, and 50% to the fans.
 // For the fans, those seated closer to the leader's seat receive higher rewards, which are self-claimed based on the seat weighting.
-const selfClaimRewards = async (poolBalance: number): Promise<Seat[]> => {
+const calculateSeatNumberRoleRewards = async (poolBalance: number): Promise<Seat[]> => {
   try {
     const leaderReward = poolBalance * 0.3;
     const drumReward = poolBalance * 0.1;
@@ -55,7 +55,11 @@ const selfClaimRewards = async (poolBalance: number): Promise<Seat[]> => {
     }
 
     // Set rewards for leader, drum, and flags
-    const seats: Seat[] = [
+    // 座席番号１は応援リーダー
+    // 座席番号２はドラム
+    // 座席番号３から１０は旗振り
+    // 座席番号１１から１００は声援をおくるファン（座席がリーダー席から遠ざかる＝１００に近づくにつれて報酬額が少なくなる）
+    const allSeatInfo: Seat[] = [
       { seatNumber: 1, role: "leader" as SeatType, reward: leaderReward },
       { seatNumber: 2, role: "drum" as SeatType, reward: drumReward },
       ...Array.from({ length: 8 }, (_, i) => ({
@@ -66,7 +70,7 @@ const selfClaimRewards = async (poolBalance: number): Promise<Seat[]> => {
       ...fanSeats,
     ];
 
-    return seats;
+    return allSeatInfo;
   } catch (error) {
     console.error("Error self-claiming rewards:", error);
     throw error;
@@ -74,27 +78,26 @@ const selfClaimRewards = async (poolBalance: number): Promise<Seat[]> => {
 };
 
 // ユーザの報酬金額を計算する関数
-export async function getReward(
+export async function getSelfClaimAmount(
   seatNumbers: string[],
   walletAddresses: string[],
   poolBalance: number,
   claimer: string
 ) {
   try {
-    // 試合チケットにデポジットされたファントークンを
-    const seats = await selfClaimRewards(poolBalance);
-    console.log('seats', seats);
+    // 試合チケットにデポジットされたファントークン総額が各座席にどれだけ分配されるかを計算する
+    const allSeatInfo = await calculateSeatNumberRoleRewards(poolBalance);
 
-
+    // 既にチケットNFTが購入された席番号に絞って上記の配列をソートする
     const addressAndRewardPairs = seatNumbers.map((seatNumber, index) => {
-      const seat = seats.find((s) => s.seatNumber === parseInt(seatNumber));
+      const seat = allSeatInfo.find((s) => s.seatNumber === parseInt(seatNumber));
       const reward = seat ? seat.reward : 0;
       return [walletAddresses[index], reward];
     });
 
-    // TODO: 一人の座席に対する報酬を計算する関数を用意
-    console.log('addressAndRewardPairs', addressAndRewardPairs);
-    // Find the pair with the matching address
+    // 今回セルフクレームする対象の席番号一つに絞って配列をソートし
+    // 対象の配列から報酬額のみを取得する
+    // 貢献報酬として試合コントラクトからファントークンを引き出す際に、この報酬額を指定する
     const amount = addressAndRewardPairs.find(([address]) => address === claimer)?.[1];
     return amount;
   } catch (error) {
@@ -102,3 +105,5 @@ export async function getReward(
     throw error;
   }
 }
+
+

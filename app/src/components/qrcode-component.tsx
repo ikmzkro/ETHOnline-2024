@@ -10,7 +10,7 @@ import useSelfClaim from "@/hooks/useSelfClaim";
 import { useEffect, useState } from "react";
 import useSeatNumbers from "@/hooks/useSeatNumbers";
 import useSeatReceivers from "@/hooks/useSeatReceivers";
-import { getReward } from "@/lib/utils";
+import { getSelfClaimAmount } from "@/lib/utils";
 import usePoolBalance from "@/hooks/usePoolBalance";
 import { useAccount } from "wagmi";
 import useRewardBalance from "@/hooks/useRewardBalance";
@@ -18,9 +18,6 @@ import useRewardBalance from "@/hooks/useRewardBalance";
 interface QRCodeComponentProps {}
 
 export function QRCodeComponent({}: QRCodeComponentProps) {
-  // Error: NextRouter was not mounted. https://nextjs.org/docs/messages/next-router-not-mounted
-  // const router = useRouter();
-  // const { nftData, metaData } = router.query;
   const { address } = useAccount();
   const [claimAmount, setClaimAmount] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -29,15 +26,14 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
   const rewardBalance = useRewardBalance();
   const purchasedSeats = useSeatNumbers();
   const nftOwners = useSeatReceivers();
-
   const resSelfClaim = useSelfClaim(claimAmount);
 
-  // useEffect(() => {
-  //   // Ensure `claimAmount` is updated before calling `resSelfClaim.writeAsync`
-  //   if (claimAmount > 0) {
-  //     resSelfClaim?.writeAsync();
-  //   }
-  // }, [claimAmount > 0]);
+  useEffect(() => {
+    // Ensure `claimAmount` is updated before calling `resSelfClaim.writeAsync`
+    if (claimAmount > 0) {
+      resSelfClaim?.writeAsync();
+    }
+  }, [claimAmount > 0]);
 
   if (!res.metadata) {
     return (
@@ -121,22 +117,15 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
                     try {
                       const fetch = async () => {
                         // Calculate selfClaimAmount by SeatNumber, SeatRole
-                        const sendRequests = await getReward(
+                        const sendRequests = await getSelfClaimAmount(
                           purchasedSeats as any,
                           nftOwners as any,
                           poolBalance?.toString() as any,
                           address as any
                         );
-                        console.log("sendRequests", sendRequests);
                         const amount = Math.floor(Number(sendRequests));
+                        // claimAmountを更新することで、useEffectを起動し試合コントラクトから報酬額を引き出すHooksをコールする
                         setClaimAmount(amount);
-
-                        // Check if claimAmount is greater than 0 before calling writeAsync
-                        // if (amount > 0) {
-                        //   await resSelfClaim.writeAsync();
-                        // } else {
-                        //   alert("Claim amount must be greater than 0");
-                        // }
                       };
                       fetch();
                     } catch (error) {
