@@ -66,29 +66,6 @@ const selfClaimRewards = async (poolBalance: number): Promise<Seat[]> => {
   }
 };
 
-// 管理者側から一括で分配する際の関数
-export async function getAddressAndRewardPairs(
-  seatNumbers: string[],
-  walletAddresses: string[],
-  poolBalance: number
-) {
-  try {
-    const seats = await selfClaimRewards(poolBalance);
-
-    const addressAndRewardPairs = seatNumbers.map((seatNumber, index) => {
-      const seat = seats.find((s) => s.seatNumber === parseInt(seatNumber));
-      const reward = seat ? seat.reward : 0;
-      return [walletAddresses[index], reward];
-    });
-
-    return addressAndRewardPairs;
-  } catch (error) {
-    console.error("Error generating reward pairs:", error);
-    throw error;
-  }
-}
-
-
 // ユーザの報酬金額を計算する関数
 export async function getReward(
   seatNumbers: string[],
