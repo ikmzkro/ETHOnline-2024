@@ -23,4 +23,25 @@ contract FanToken is ERC20, ReentrancyGuard, IFanToken {
     }
 
     // TODO: Func SelfClaim
+    // https://dev.to/peterblockman/understand-merkle-tree-by-making-a-nft-minting-whitelist-1148#validate-data-using-merkle-tree
+    library LibMerkleProof {
+        function verify(bytes32[] calldata proof, bytes32 root, bytes32 leaf) internal pure returns (bool) {
+            bytes32 computedHash = leaf;
+            uint256 proofLength = proof.length;
+            for (uint256 i = 0; i < proofLength; i++) {
+                bytes32 proofElement = proof[i];
+                if (computedHash <= proofElement) {
+                    computedHash = keccak256(abi.encodePacked(computedHash, proofElement));
+                } else {
+                    computedHash = keccak256(abi.encodePacked(proofElement, computedHash));
+                }
+            }
+            return computedHash == root;
+        }
+    }
+
+    bytes32 node = keccak256(abi.encodePacked(param.node, param.matchId, param.rewardAmount));
+    if(!LibMerkleProof.verify(param.proofs, settings.merkleRoot, node)){
+        revert InvalidMerkleProof();
+    }
 }
