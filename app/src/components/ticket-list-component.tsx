@@ -11,6 +11,7 @@ interface TicketListProps {}
 
 export function TicketListComponent() {
   const poolBalance = usePoolBalance();
+  console.log('poolBalance', poolBalance);
   const res = useTicketMetadata();
 
   // TODO: 恥ずべきスパゲティコード🍝
