@@ -26,6 +26,16 @@ export function formatCurrency(amount: string | undefined): string {
   }).format(numberValue as any);
 }
 
+
+// TODO: 将来的な貢献報酬のプラン
+// - 選手への貢献報酬
+//   - 来場したサポーター
+//   - 芝生を管理しているスタッフ
+// - サポータへの貢献
+//   - ゲートスタッフ
+//   - スタグル
+//   - ハーフタイムイベントみたいなの
+
 // `poolBalance`: The total amount (e.g., 1 poolBalance) is taken as an argument.
 // The rewards are self-claimed as follows: 30% to the leader, 10% to the drum, 10% divided equally among the flag bearers, and 50% to the fans.
 // For the fans, those seated closer to the leader's seat receive higher rewards, which are self-claimed based on the seat weighting.
