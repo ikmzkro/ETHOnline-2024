@@ -18,11 +18,11 @@ export function TicketBookingComponent({}: TicketBookingComponentProps) {
     const seatNum = Number(seatNumber);
     setSelectedSeat(`Seat ${seatNum}`);
     // Role is set automatically
-    if ([1, 2, 3, 4, 7, 8, 9, 10].includes(seatNum)) {
+    if ([3, 4, 5, 6, 7, 8, 9, 10].includes(seatNum)) {
       setSelectedRole("flag");
-    } else if (seatNum === 5) {
+    } else if (seatNum === 1) {
       setSelectedRole("leader");
-    } else if (seatNum === 6) {
+    } else if (seatNum === 2) {
       setSelectedRole("drum");
     } else if (seatNum >= 11 && seatNum <= 100) {
       setSelectedRole("fan");

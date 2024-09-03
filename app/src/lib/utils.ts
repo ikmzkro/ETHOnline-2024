@@ -3,9 +3,16 @@ import { twMerge } from "tailwind-merge"
 
 type SeatType = "leader" | "drum" | "flag" | "fan";
 
+// 席、役割、報酬の配列
+// {
+//   "seatNumber": 1,
+//   "type": "leader",
+//   "reward": 29601.3
+// }
+
 interface Seat {
   seatNumber: number;
-  type: SeatType;
+  role: SeatType;
   reward: number;
 }
 
@@ -38,7 +45,7 @@ const selfClaimRewards = async (poolBalance: number): Promise<Seat[]> => {
     for (let i = 0; i < totalFanSeats; i++) {
       const weight = Math.ceil((totalFanSeats - i) / seatsPerRow);
       totalWeight += weight;
-      fanSeats.push({ seatNumber: fansStart + i, type: "fan", reward: 0 });
+      fanSeats.push({ seatNumber: fansStart + i, role: "fan", reward: 0 });
     }
 
     // Assign rewards to fans based on calculated weight
@@ -49,11 +56,11 @@ const selfClaimRewards = async (poolBalance: number): Promise<Seat[]> => {
 
     // Set rewards for leader, drum, and flags
     const seats: Seat[] = [
-      { seatNumber: 1, type: "leader" as SeatType, reward: leaderReward },
-      { seatNumber: 2, type: "drum" as SeatType, reward: drumReward },
+      { seatNumber: 1, role: "leader" as SeatType, reward: leaderReward },
+      { seatNumber: 2, role: "drum" as SeatType, reward: drumReward },
       ...Array.from({ length: 8 }, (_, i) => ({
         seatNumber: 3 + i,
-        type: "flag" as SeatType,
+        role: "flag" as SeatType,
         reward: flagReward,
       })),
       ...fanSeats,
@@ -76,6 +83,9 @@ export async function getReward(
   try {
     // 試合チケットにデポジットされたファントークンを
     const seats = await selfClaimRewards(poolBalance);
+    console.log('seats', seats);
+
+
     const addressAndRewardPairs = seatNumbers.map((seatNumber, index) => {
       const seat = seats.find((s) => s.seatNumber === parseInt(seatNumber));
       const reward = seat ? seat.reward : 0;
