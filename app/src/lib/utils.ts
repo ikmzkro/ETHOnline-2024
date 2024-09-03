@@ -74,6 +74,7 @@ export async function getReward(
   claimer: string
 ) {
   try {
+    // 試合チケットにデポジットされたファントークンを
     const seats = await selfClaimRewards(poolBalance);
     const addressAndRewardPairs = seatNumbers.map((seatNumber, index) => {
       const seat = seats.find((s) => s.seatNumber === parseInt(seatNumber));

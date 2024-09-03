@@ -32,12 +32,12 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
 
   const resSelfClaim = useSelfClaim(claimAmount);
 
-  useEffect(() => {
-    // Ensure `claimAmount` is updated before calling `resSelfClaim.writeAsync`
-    if (claimAmount > 0) {
-      resSelfClaim?.writeAsync();
-    }
-  }, [claimAmount > 0]);
+  // useEffect(() => {
+  //   // Ensure `claimAmount` is updated before calling `resSelfClaim.writeAsync`
+  //   if (claimAmount > 0) {
+  //     resSelfClaim?.writeAsync();
+  //   }
+  // }, [claimAmount > 0]);
 
   if (!res.metadata) {
     return (
@@ -132,11 +132,11 @@ export function QRCodeComponent({}: QRCodeComponentProps) {
                         setClaimAmount(amount);
 
                         // Check if claimAmount is greater than 0 before calling writeAsync
-                        if (amount > 0) {
-                          await resSelfClaim.writeAsync();
-                        } else {
-                          alert("Claim amount must be greater than 0");
-                        }
+                        // if (amount > 0) {
+                        //   await resSelfClaim.writeAsync();
+                        // } else {
+                        //   alert("Claim amount must be greater than 0");
+                        // }
                       };
                       fetch();
                     } catch (error) {
