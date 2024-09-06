@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge"
 
 type SeatType = "leader" | "drum" | "flag" | "fan";
 
-// 席、役割、報酬の配列
+// Array of seats, roles, and rewards
 // {
 //   "seatNumber": 1,
 //   "type": "leader",
@@ -27,14 +27,14 @@ export function formatCurrency(amount: string | undefined): string {
 }
 
 
-// TODO: 将来的な貢献報酬のプラン
-// - 選手への貢献報酬
-//   - 来場したサポーター
-//   - 芝生を管理しているスタッフ
-// - サポータへの貢献
-//   - ゲートスタッフ
-//   - スタグル
-//   - ハーフタイムイベントみたいなの
+// TODO: Future Contribution Reward Plan
+// - Contribution rewards for players
+//   - Supporters who attend
+//   - Staff managing the turf
+// - Contribution rewards for supporters
+//   - Gate staff
+//   - Staff members
+//   - Events like halftime activities
 
 // `poolBalance`: The total amount (e.g., 1 poolBalance) is taken as an argument.
 // The rewards are self-claimed as follows: 30% to the leader, 10% to the drum, 10% divided equally among the flag bearers, and 50% to the fans.
@@ -65,10 +65,10 @@ const calculateSeatNumberRoleRewards = async (poolBalance: number): Promise<Seat
     }
 
     // Set rewards for leader, drum, and flags
-    // 座席番号１は応援リーダー
-    // 座席番号２はドラム
-    // 座席番号３から１０は旗振り
-    // 座席番号１１から１００は声援をおくるファン（座席がリーダー席から遠ざかる＝１００に近づくにつれて報酬額が少なくなる）
+    // Seat number 1 is the cheer leader
+    // Seat number 2 is the drummer
+    // Seats 3 to 10 are flag wavers
+    // Seats 11 to 100 are fans cheering (the reward amount decreases as the seats get farther from the leader's seat, i.e., as the seat number approaches 100)
     const allSeatInfo: Seat[] = [
       { seatNumber: 1, role: "leader" as SeatType, reward: leaderReward },
       { seatNumber: 2, role: "drum" as SeatType, reward: drumReward },
@@ -87,7 +87,7 @@ const calculateSeatNumberRoleRewards = async (poolBalance: number): Promise<Seat
   }
 };
 
-// ユーザの報酬金額を計算する関数
+// Function to calculate the user's reward amount
 export async function getSelfClaimAmount(
   seatNumbers: string[],
   walletAddresses: string[],
@@ -95,19 +95,20 @@ export async function getSelfClaimAmount(
   claimer: string
 ) {
   try {
-    // 試合チケットにデポジットされたファントークン総額が各座席にどれだけ分配されるかを計算する
+
+    // Calculate how the total amount of fan tokens deposited for the match ticket is distributed among each seat
     const allSeatInfo = await calculateSeatNumberRoleRewards(poolBalance);
 
-    // 既にチケットNFTが購入された席番号に絞って上記の配列をソートする
+    // Sort the above array to include only the seat numbers where ticket NFTs have already been purchased
     const addressAndRewardPairs = seatNumbers.map((seatNumber, index) => {
       const seat = allSeatInfo.find((s) => s.seatNumber === parseInt(seatNumber));
       const reward = seat ? seat.reward : 0;
       return [walletAddresses[index], reward];
     });
 
-    // 今回セルフクレームする対象の席番号一つに絞って配列をソートし
-    // 対象の配列から報酬額のみを取得する
-    // 貢献報酬として試合コントラクトからファントークンを引き出す際に、この報酬額を指定する
+    // Sort the array to include only the seat number for the current self-claim
+    // Retrieve only the reward amount from the filtered array
+    // When withdrawing fan tokens as contribution rewards from the match contract, specify this reward amount
     const amount = addressAndRewardPairs.find(([address]) => address === claimer)?.[1];
     return amount;
   } catch (error) {
