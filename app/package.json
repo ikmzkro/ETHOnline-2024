@@ -1,5 +1,5 @@
 {
-  "name": "ChilizProof",
+  "name": "AA",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@alchemy/aa-accounts": "^3.19.0",
+    "@alchemy/aa-alchemy": "^3.19.0",
+    "@alchemy/aa-core": "^3.19.0",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-radio-group": "^1.2.0",
@@ -16,22 +19,22 @@
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@rainbow-me/rainbowkit": "^2.1.3",
+    "axios": "^0.27.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "ethers": "^5.6.9",
     "lucide-react": "^0.427.0",
     "next": "14.2.5",
+    "qrcode.react": "^3.1.0",
     "react": "^18",
     "react-dom": "^18",
+    "recharts": "^2.12.7",
+    "sonner": "^1.4.3",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "v0": "^2.2.5",
-    "viem": "^2.20.0",
-    "wagmi": "^2.12.1",
-    "axios": "^0.27.2",
-    "qrcode.react": "^3.1.0",
-    "recharts": "^2.12.7",
-    "sonner": "^1.4.3"
+    "viem": "^2.21.41",
+    "wagmi": "^2.12.1"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.28.4",
